@@ -22,6 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
@@ -30,92 +33,104 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private String mUserId;
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
+    @BindView(R.id.listView) ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        ButterKnife.bind(this);
+
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Initialize Firebase Auth and Database Reference
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        if (mFirebaseUser == null) {
+        if (initialiseFireBase() == null) {
             // Not logged in, launch the Log In activity
             loadLogInView();
         } else {
-            mUserId = mFirebaseUser.getUid();
-
-            // Set up ListView
-            final ListView listView = (ListView) findViewById(R.id.listView);
-            final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
-            listView.setAdapter(adapter);
-
-            // Add items via the Button and EditText at the bottom of the view.
-            final EditText text = (EditText) findViewById(R.id.todoText);
-            final Button button = (Button) findViewById(R.id.addButton);
-            button.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Item item = new Item(text.getText().toString());
-                    mDatabase.child("users").child(mUserId).child("items").push().setValue(item);
-                    text.setText("");
-                }
-            });
-
-            // Use Firebase to populate the list.
-            mDatabase.child("users").child(mUserId).child("items").addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    adapter.add((String) dataSnapshot.child("title").getValue());
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    adapter.remove((String) dataSnapshot.child("title").getValue());
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-            //Delete items when clicked
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    mDatabase.child("users").child(mUserId).child("items")
-                            .orderByChild("title")
-                            .equalTo((String) listView.getItemAtPosition(position))
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.hasChildren()) {
-                                        DataSnapshot firstChild = dataSnapshot.getChildren().iterator().next();
-                                        firstChild.getRef().removeValue();
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
-                }
-            });
-
+            populateView();
         }
+    }
+
+    private FirebaseUser initialiseFireBase(){
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        return mFirebaseUser;
+    }
+
+    private void populateView(){
+        mUserId = mFirebaseUser.getUid();
+
+        // Set up ListView
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
+        listView.setAdapter(adapter);
+
+        // Add items via the Button and EditText at the bottom of the view.
+        final EditText text = (EditText) findViewById(R.id.todoText);
+        final Button button = (Button) findViewById(R.id.addButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Item item = new Item(text.getText().toString());
+                mDatabase.child("users").child(mUserId).child("items").push().setValue(item);
+                text.setText("");
+            }
+        });
+
+        // Use Firebase to populate the list.
+        mDatabase.child("users").child(mUserId).child("items").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                adapter.add((String) dataSnapshot.child("title").getValue());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                adapter.remove((String) dataSnapshot.child("title").getValue());
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        //Delete items when clicked
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mDatabase.child("users").child(mUserId).child("items")
+                        .orderByChild("title")
+                        .equalTo((String) listView.getItemAtPosition(position))
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.hasChildren()) {
+                                    DataSnapshot firstChild = dataSnapshot.getChildren().iterator().next();
+                                    firstChild.getRef().removeValue();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+            }
+        });
     }
 
     @Override
