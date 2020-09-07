@@ -13,13 +13,14 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login_button_label" />
+        android:text="@string/login_button_label"
+        android:onClick="onLoginClicked"/>
 
     <Button
         android:id="@+id/btnSignup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/sign_up_text" />
-
+        android:text="@string/sign_up_text"
+        android:onClick="onSignupClicked"/>
 
 </LinearLayout>
