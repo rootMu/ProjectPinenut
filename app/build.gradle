@@ -86,6 +86,7 @@ dependencies {
 
     //Firebase
     implementation "com.firebaseui:firebase-ui-auth:$firebase_auth_version"
+    implementation "com.google.firebase:firebase-analytics:$firebase_analytics_version"
 
     //Timber
     implementation "com.jakewharton.timber:timber:$timber_version"

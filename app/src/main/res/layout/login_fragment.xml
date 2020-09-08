@@ -9,19 +9,15 @@
             type="com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:orientation="vertical"
+        android:gravity="center"
         tools:context=".view.login.LoginFragment">
 
-        <include
-            android:id="@+id/login_details"
-            layout="@layout/login_details" />
-
         <Button
-            app:layout_constraintTop_toBottomOf="@id/login_details"
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,24 +25,12 @@
             android:onClick="@{() -> viewModel.attemptLogin()}"/>
 
         <Button
-            app:layout_constraintTop_toBottomOf="@id/btnLogin"
-            android:id="@+id/btnSignup"
+            android:id="@+id/btnGuest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/sign_up_text"
-            android:onClick="@{() -> viewModel.goToSignUp()}"/>
+            android:text="@string/continue_as_guest"
+            android:onClick="@{() -> viewModel.guestLogin()}"/>
 
-        <ProgressBar
-            android:id="@+id/loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:indeterminate="true"
-            android:visibility="gone"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </layout>
