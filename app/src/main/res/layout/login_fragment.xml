@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:gravity="center"
+        tools:context=".view.login.LoginFragment">
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_button_label"
+            android:onClick="@{() -> viewModel.attemptLogin()}"/>
+
+        <Button
+            android:id="@+id/btnGuest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/continue_as_guest"
+            android:onClick="@{() -> viewModel.guestLogin()}"/>
+
+    </LinearLayout>
+
+</layout>
