@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -11,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.MainFragmentBinding
 import com.projects.rootmu.projectpinenut.utils.autoCleared
+import com.projects.rootmu.projectpinenut.utils.onBackPressed
 import com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel
 import com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel.Companion.USER
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,14 +22,19 @@ class MainFragment : Fragment() {
 
     private var binding: MainFragmentBinding by autoCleared()
     private val viewModel: AccountsViewModel by activityViewModels()
+    private var user: FirebaseUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = MainFragmentBinding.inflate(inflater, container, false)
-
         binding.lifecycleOwner = viewLifecycleOwner
+
+        onBackPressed{
+            viewModel.logout()
+        }
+
         return binding.root
     }
 
@@ -40,17 +47,16 @@ class MainFragment : Fragment() {
     }
 
     private fun setupObservers(user: FirebaseUser? = null) {
+        this.user = user
         viewModel.authenticationState.observe(viewLifecycleOwner)
         { authenticationState ->
             when (authenticationState) {
                 AccountsViewModel.AuthenticationState.AUTHENTICATED -> {
-                    // TODO 2. If the user is logged in,
-                    // you can customize the welcome message they see by
-                    // utilizing the getFactWithPersonalization() function provided
-
+                    //reset temp user variable so logout can happen
+                    this.user = null
                 }
                 else -> {
-                    if(user == null)
+                    if (this.user == null)
                         navigateToLogin()
                 }
             }
@@ -62,6 +68,5 @@ class MainFragment : Fragment() {
             R.id.action_mainFragment_to_loginFragment
         )
     }
-
 
 }

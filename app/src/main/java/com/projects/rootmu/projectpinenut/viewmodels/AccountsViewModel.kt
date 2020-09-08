@@ -23,10 +23,13 @@ class AccountsViewModel @ViewModelInject constructor(@ApplicationContext private
     val providers: MutableLiveData<List<AuthUI.IdpConfig>> = MutableLiveData()
 
     val authenticationState = FirebaseUserLiveData().map { user ->
-        if (user != null) {
-            AuthenticationState.AUTHENTICATED
-        } else {
-            AuthenticationState.UNAUTHENTICATED
+        when {
+            user != null -> {
+                AuthenticationState.AUTHENTICATED
+            }
+            else -> {
+                AuthenticationState.UNAUTHENTICATED
+            }
         }
     }
 
@@ -35,7 +38,9 @@ class AccountsViewModel @ViewModelInject constructor(@ApplicationContext private
             providers.postValue(
                 arrayListOf(
                     AuthUI.IdpConfig.EmailBuilder().build(),
-                    AuthUI.IdpConfig.GoogleBuilder().build()
+                    AuthUI.IdpConfig.GoogleBuilder().build(),
+//                    AuthUI.IdpConfig.FacebookBuilder().build(),
+                    AuthUI.IdpConfig.PhoneBuilder().build()
 
                     // This is where you can provide more ways for users to register and
                     // sign in.
@@ -44,11 +49,12 @@ class AccountsViewModel @ViewModelInject constructor(@ApplicationContext private
         }
     }
 
-    fun guestLogin(){
+    fun guestLogin() {
 
     }
 
     fun logout() {
+        providers.postValue(emptyList())
         AuthUI.getInstance().signOut(context)
     }
 

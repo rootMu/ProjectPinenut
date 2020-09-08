@@ -19,8 +19,9 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="@style/ToolbarTheme"
+                app:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
                 android:elevation="4dp"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

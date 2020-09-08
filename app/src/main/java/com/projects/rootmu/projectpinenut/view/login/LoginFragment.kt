@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.LoginFragmentBinding
 import com.projects.rootmu.projectpinenut.utils.autoCleared
+import com.projects.rootmu.projectpinenut.utils.onBackPressed
 import com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel
 import com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel.Companion.SIGN_IN_REQUEST_CODE
 import com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel.Companion.USER
@@ -25,10 +27,6 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
-
-    companion object {
-        const val SIGN_IN_RESULT_CODE = 1001
-    }
 
     private var binding: LoginFragmentBinding by autoCleared()
     private val viewModel: AccountsViewModel by activityViewModels()
@@ -41,8 +39,12 @@ class LoginFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        onBackPressed { /**Do Nothing**/ }
+
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,14 +53,15 @@ class LoginFragment : Fragment() {
 
     private fun setupObservers() {
         viewModel.providers.observe(viewLifecycleOwner) {
-
-            startActivityForResult(
-                AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(it)
-                    .build(),
-                SIGN_IN_REQUEST_CODE
-            )
+            if (it.isNotEmpty()) {
+                startActivityForResult(
+                    AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(it)
+                        .build(),
+                    SIGN_IN_REQUEST_CODE
+                )
+            }
         }
     }
 
@@ -82,7 +85,7 @@ class LoginFragment : Fragment() {
 
 
     private fun navigateToMain(user: FirebaseUser? = null) {
-        val args = user?.let{
+        val args = user?.let {
             bundleOf(USER to user)
         }
         findNavController().navigate(
@@ -90,5 +93,4 @@ class LoginFragment : Fragment() {
             args
         )
     }
-
 }
