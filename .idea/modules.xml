@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ProjectPinenut.iml" filepath="$PROJECT_DIR$/ProjectPinenut.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ProjectPinenut-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ProjectPinenut-app.iml" group="ProjectPinenut/app" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/apps-ProjectPinenut.iml" filepath="$PROJECT_DIR$/.idea/modules/apps-ProjectPinenut.iml" group="ProjectPinenut" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ProjectPinenut.iml" filepath="$PROJECT_DIR$/.idea/modules/ProjectPinenut.iml" group="ProjectPinenut" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="ProjectPinenut/app" />
     </modules>
   </component>
 </project>

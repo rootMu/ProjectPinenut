@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
@@ -48,6 +50,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'androidx.fragment:fragment-ktx:1.2.5'
 
     //Support
     implementation "com.android.support:recyclerview-v7:$android_support_version"
@@ -80,5 +83,11 @@ dependencies {
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    //Firebase
+    implementation "com.firebaseui:firebase-ui-auth:$firebase_auth_version"
+
+    //Timber
+    implementation "com.jakewharton.timber:timber:$timber_version"
 
 }
