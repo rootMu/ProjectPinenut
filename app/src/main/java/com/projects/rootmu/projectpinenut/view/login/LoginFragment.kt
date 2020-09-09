@@ -78,7 +78,9 @@ class LoginFragment : Fragment() {
                 // Sign in failed. If response is null, the user canceled the
                 // sign-in flow using the back button. Otherwise, check
                 // the error code and handle the error.
-                Timber.i("Sign in unsuccessful ${response?.error?.errorCode}!")
+                response?.let{
+                    Timber.i("Sign in unsuccessful ${it.error?.errorCode}!")
+                }
             }
         }
     }

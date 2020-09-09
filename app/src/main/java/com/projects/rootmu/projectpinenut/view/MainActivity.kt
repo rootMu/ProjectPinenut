@@ -5,15 +5,10 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.navigation.*
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.google.firebase.auth.FirebaseUser
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.ActivityMainBinding
 import com.projects.rootmu.projectpinenut.view.profile.ProfileFragment
@@ -46,14 +41,17 @@ class MainActivity : AppCompatActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         viewModel.authenticationState.observe(this) { authenticationState ->
-            menu.setGroupVisible(R.id.logout, authenticationState == AccountsViewModel.AuthenticationState.AUTHENTICATED)
+            menu.setGroupVisible(
+                R.id.logout,
+                authenticationState == AccountsViewModel.AuthenticationState.AUTHENTICATED
+            )
         }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here.
-        when(item.itemId){
+        when (item.itemId) {
             R.id.action_logout -> viewModel.logout()
             R.id.action_profile -> navigateToProfile()
         }
@@ -65,15 +63,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToProfile() {
-
-        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-        val prev = supportFragmentManager.findFragmentByTag("dialog")
-        if (prev != null) {
-            ft.remove(prev)
+        supportFragmentManager.beginTransaction().also { ft ->
+            supportFragmentManager.findFragmentByTag("profile")?.let {
+                ft.remove(it)
+            }
         }
-        ft.addToBackStack(null)
-
-        ProfileFragment().show(ft, "dialog")
+            .setCustomAnimations(
+                R.anim.slide_in_up,
+                R.anim.slide_out_down,
+                R.anim.slide_out_down,
+                R.anim.slide_in_up
+            )
+            .addToBackStack(null)
+            .add(R.id.profile_frame, ProfileFragment(), "profile")
+            .commit()
     }
 
 }
