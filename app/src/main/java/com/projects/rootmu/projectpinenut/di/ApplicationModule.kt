@@ -1,6 +1,9 @@
 package com.projects.rootmu.projectpinenut.di
 
 import android.content.Context
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import androidx.core.content.pm.PackageInfoCompat.getLongVersionCode
 import com.projects.rootmu.projectpinenut.utils.SharedPreferencesManager
 import dagger.Module
 import dagger.Provides
@@ -8,7 +11,6 @@ import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-
 
 /**
  * Network Specific Dependencies
@@ -18,9 +20,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 object ApplicationModule {
 
     /**
-     * Provides the InspectionsService implementation
-     * @param retrofit the Retrofit object used to instantiate the service
-     * @return the Inspections Service implementation
+     * Provides the SharedPreferencesManager implementation
+     * @param context the Application Context
+     * @return SharedPreferencesManager Singleton implementation
      */
     @Provides
     @Reusable
@@ -28,4 +30,27 @@ object ApplicationModule {
     internal fun providesSharedPreferencesManager(@ApplicationContext context: Context) =
         SharedPreferencesManager(context)
 
+    /**
+     * Provides the PackageManager implementation
+     * @param context the Application Context
+     * @return PackageManager implementation
+     */
+    @Provides
+    @Reusable
+    @JvmStatic
+    internal fun providesPackageManager(@ApplicationContext context: Context) =
+        context.packageManager
+
+    /**
+     * Provides the PackageInfo implementation with the package Name
+     * @param context the Application Context
+     * @param packageManager the PackageManager
+     * @return PackageInfo implementation
+     */
+    @Provides
+    @Reusable
+    @JvmStatic
+    @PackageName
+    internal fun providesPackageInfo(@ApplicationContext context: Context, packageManager: PackageManager) =
+        packageManager.getPackageInfo(context.packageName, 0)
 }

@@ -95,4 +95,9 @@ dependencies {
     //Timber
     implementation "com.jakewharton.timber:timber:$timber_version"
 
+    //Lottie
+    implementation 'com.romandanylyk:pageindicatorview:1.0.2@aar'
+    implementation 'com.airbnb.android:lottie:3.3.1'
+    implementation 'com.jaeger.statusbarutil:library:1.5.1'
+
 }

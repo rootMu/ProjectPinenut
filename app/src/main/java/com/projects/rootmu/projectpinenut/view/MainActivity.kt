@@ -1,5 +1,6 @@
 package com.projects.rootmu.projectpinenut.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,18 +12,26 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.ActivityMainBinding
+import com.projects.rootmu.projectpinenut.utils.AppStart
+import com.projects.rootmu.projectpinenut.utils.CheckAppStart
+import com.projects.rootmu.projectpinenut.view.onboarding.OnBoardingActivity
 import com.projects.rootmu.projectpinenut.view.profile.ProfileFragment
 import com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: AccountsViewModel by viewModels()
 
+    @Inject
+    lateinit var checkAppStart: CheckAppStart
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val binding: ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -34,8 +43,19 @@ class MainActivity : AppCompatActivity() {
         toolbar.setupWithNavController(navController, appBarConfiguration)
 
         setSupportActionBar(toolbar)
-    }
 
+        when (checkAppStart.status()) {
+            AppStart.NORMAL -> {
+                //TODO normal stuff? though it would need to be considered that this will not be called AFTER the onboarding
+            }
+            AppStart.UPDATE -> {
+                //TODO do some sort of whats new dialog box
+            }
+            AppStart.FIRST_TIME -> {
+                startActivity(Intent(applicationContext, OnBoardingActivity::class.java))
+            }
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
