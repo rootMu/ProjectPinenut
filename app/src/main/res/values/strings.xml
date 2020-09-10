@@ -10,4 +10,23 @@
 
     <string name="facebook_application_id">425876731724697</string>
     <string name="facebook_login_protocol_scheme">fb425876731724697</string>
+
+    <!-- On Boarding -->
+    <string name="title_onboarding_1">On Boarding Title 1</string>
+    <string name="description_onboarding_1">This is a description for onboarding</string>
+
+    <string name="title_onboarding_2">On Boarding Title 2</string>
+    <string name="description_onboarding_2">This is another description for onboarding</string>
+
+    <string name="title_onboarding_3">On Boarding Title 3</string>
+    <string name="description_onboarding_3">This is yet another description for onboarding</string>
+
+    <string name="start_text_advice">By continuing on this application you agree to our Terms of Use and Privacy Policy</string>
+
+    <!-- Generic Strings -->
+    <string name="start">start</string>
+    <string name="skip">Skip</string>
+    <string name="finish">finish</string>
+    <string name="next">next</string>
+    <string name="back">back</string>
 </resources>
