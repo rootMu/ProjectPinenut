@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="color_jobs_in_progress">#2196F3</color>
+    <color name="color_jobs_completed">#51CC1D</color>
+    <color name="color_profile_background">#009688</color>
+    <color name="color_profile_foreground">#F6F5ED</color>
+
 </resources>

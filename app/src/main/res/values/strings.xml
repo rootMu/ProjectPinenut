@@ -6,7 +6,16 @@
     <string name="continue_as_guest">Continue as Guest</string>
     <string name="title_activity_login">Sign in</string>
     <string name="action_logout">Logout</string>
+
     <string name="action_profile">Profile</string>
+    <string name="profile_hire_me">Hire Me</string>
+    <string name="profile_portfolio">Portfolio</string>
+    <string name="profile_jobs">View Jobs</string>
+    <string name="profile_rating">Average Rating</string>
+    <string name="profile_jobs_total">Total Jobs</string>
+    <string name="profile_followers">Followers</string>
+    <string name="profile_following">Following</string>
+    <string name="profile_skills">Skills</string>
 
     <string name="facebook_application_id">425876731724697</string>
     <string name="facebook_login_protocol_scheme">fb425876731724697</string>
