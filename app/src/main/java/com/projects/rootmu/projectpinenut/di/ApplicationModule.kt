@@ -53,7 +53,4 @@ object ApplicationModule {
     @PackageName
     internal fun providesPackageInfo(@ApplicationContext context: Context, packageManager: PackageManager) =
         packageManager.getPackageInfo(context.packageName, 0)
-
-
-
 }

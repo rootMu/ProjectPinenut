@@ -39,8 +39,11 @@ class AccountsViewModel @ViewModelInject constructor(@ApplicationContext private
                 arrayListOf(
                     AuthUI.IdpConfig.EmailBuilder().build(),
                     AuthUI.IdpConfig.GoogleBuilder().build(),
-//                    AuthUI.IdpConfig.FacebookBuilder().build(),
+                    //  AuthUI.IdpConfig.FacebookBuilder().build(),
                     AuthUI.IdpConfig.PhoneBuilder().build()
+
+                    //TODO fix facebook login
+                    //TODO add twitter login
 
                     // This is where you can provide more ways for users to register and
                     // sign in.
@@ -50,7 +53,7 @@ class AccountsViewModel @ViewModelInject constructor(@ApplicationContext private
     }
 
     fun guestLogin() {
-
+        //TODO anonymous login
     }
 
     fun logout() {
