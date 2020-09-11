@@ -1,15 +1,10 @@
 package com.projects.rootmu.projectpinenut.utils
 
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 
-fun ViewPager.onPagePositionUpdate(invoke: (Int) -> Unit = {}) = addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-
-    override fun onPageScrollStateChanged(state: Int) {}
-
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
+fun ViewPager2.onPageSelected(invoke: (Int) -> Unit = {}) = registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
     override fun onPageSelected(position: Int) {
+        super.onPageSelected(position)
         invoke.invoke(position)
     }
-
 })
