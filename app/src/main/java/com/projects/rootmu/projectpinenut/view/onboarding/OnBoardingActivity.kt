@@ -2,15 +2,15 @@ package com.projects.rootmu.projectpinenut.view.onboarding
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.projects.rootmu.projectpinenut.databinding.ActivityOnboardingBinding
-import com.projects.rootmu.projectpinenut.utils.onPagePositionUpdate
+import com.projects.rootmu.projectpinenut.utils.onPageSelected
 import com.projects.rootmu.projectpinenut.viewmodels.OnBoardingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_onboarding.*
 
 @AndroidEntryPoint
-class OnBoardingActivity : AppCompatActivity() {
+class OnBoardingActivity : FragmentActivity() {
 
     private val viewModel: OnBoardingViewModel by viewModels()
 
@@ -27,7 +27,7 @@ class OnBoardingActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        viewPager.onPagePositionUpdate{
+        viewPager.onPageSelected{
             viewModel.pagerPosition.postValue(it)
         }
     }

@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.projects.rootmu.projectpinenut.view.onboarding">
+    tools:context="com.projects.rootmu.projectpinenut">
 
     <data>
         <variable
@@ -23,16 +23,16 @@
         android:layout_height="match_parent"
         android:background="@color/off_white_yellow">
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:overScrollMode="never"
-            app:setAdapter="@{OnBoardingViewPagerAdapter.newInstance(activity.getSupportFragmentManager(), activity, viewModel.NUM_ITEMS)}"
+            app:setAdapter="@{OnBoardingViewPagerAdapter.newInstance(activity, viewModel.NUM_ITEMS)}"
             android:foregroundGravity="center"/>
 
-        <com.rd.PageIndicatorView
+        <com.rd.PageIndicatorView2
             android:id="@+id/pageIndicatorView"
             app:layout_constraintBottom_toBottomOf="@id/btn_next_step"
             app:layout_constraintTop_toTopOf="@id/btn_next_step"
@@ -40,16 +40,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"
+            app:piv_viewPager="@id/viewPager"
+            app:piv_padding="8dp"
+            app:piv_radius="5dp"
             app:piv_animationType="worm"
             app:piv_dynamicCount="true"
             app:piv_interactiveAnimation="true"
             app:piv_selectedColor="@color/deep_orange_300"
-            app:piv_unselectedColor="@color/deep_orange_100"
-            app:piv_viewPager="@id/viewPager"
-            app:piv_padding="8dp"
-            app:piv_radius="5dp"/>
+            app:piv_unselectedColor="@color/deep_orange_100"/>
 
         <Button
             app:layout_constraintBottom_toTopOf="@id/layout_info"

@@ -44,15 +44,15 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        when (checkAppStart.status()) {
-            AppStart.NORMAL -> {
-                //TODO normal stuff? though it would need to be considered that this will not be called AFTER the onboarding
-            }
+        when (checkAppStart.status) {
             AppStart.UPDATE -> {
                 //TODO do some sort of whats new dialog box
             }
             AppStart.FIRST_TIME -> {
                 startActivity(Intent(applicationContext, OnBoardingActivity::class.java))
+            }
+            else -> {
+                //TODO normal stuff? though it would need to be considered that this will not be called AFTER the onboarding
             }
         }
     }

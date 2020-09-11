@@ -11,9 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.MainFragmentBinding
-import com.projects.rootmu.projectpinenut.utils.SharedPreferencesManager
-import com.projects.rootmu.projectpinenut.utils.autoCleared
-import com.projects.rootmu.projectpinenut.utils.onBackPressed
+import com.projects.rootmu.projectpinenut.utils.*
 import com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel
 import com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel.Companion.USER
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,6 +22,8 @@ class MainFragment : Fragment() {
 
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
+    @Inject
+    lateinit var checkAppStart: CheckAppStart
 
     private var binding: MainFragmentBinding by autoCleared()
     private val viewModel: AccountsViewModel by activityViewModels()
@@ -65,6 +65,9 @@ class MainFragment : Fragment() {
         }
 
         setupObservers()
+
+        if(sharedPreferencesManager.launchTutorial)
+            handleTutorial()
     }
 
     private fun setupObservers() {
@@ -82,6 +85,7 @@ class MainFragment : Fragment() {
                 }
             }
         }
+
     }
 
     private fun navigateToLogin() {
@@ -89,5 +93,9 @@ class MainFragment : Fragment() {
             R.id.action_mainFragment_to_loginFragment
         )
     }
+
+    private fun handleTutorial(){
+
+   }
 
 }

@@ -7,7 +7,6 @@ import com.projects.rootmu.projectpinenut.di.PackageName
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.random.Random
 
 enum class AppStart {
     FIRST_TIME, UPDATE, NORMAL;
@@ -28,21 +27,24 @@ class CheckAppStart @Inject constructor(@PackageName var packageInfo: PackageInf
         getLongVersionCode(packageInfo).toInt()
     }
 
-    fun status(): AppStart {
+    val status: AppStart =
         try {
             appStart = checkAppStart(longVersionCode, sharedPreferencesManager.lastAppVersion)
             // Update version in preferences
             sharedPreferencesManager.lastAppVersion = longVersionCode
-
+            appStart
         } catch (e: PackageManager.NameNotFoundException) {
             Timber.w("Unable to determine current app version from package manager. Defensively assuming normal app start.")
+            appStart
         }
-        return appStart
-    }
+
+
+
 
     private fun checkAppStart(currentVersionCode: Int, lastVersionCode: Int): AppStart {
         return when {
             lastVersionCode == -1 -> {
+                sharedPreferencesManager.launchTutorial = true
                 AppStart.FIRST_TIME
             }
             lastVersionCode < currentVersionCode -> {
