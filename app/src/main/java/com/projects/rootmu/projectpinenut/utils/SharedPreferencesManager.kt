@@ -16,18 +16,6 @@ class SharedPreferencesManager(context: Context) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_FILENAME, 0)
 
-    fun email(): String {
-        return email ?: ""
-    }
-
-    fun displayName(): String {
-        return displayName ?: ""
-    }
-
-    fun launchTutorial(): Boolean {
-        return launchTutorial
-    }
-
     var email: String?
         get() = prefs.getString(EMAIL, "")
         set(value) = prefs.edit().putString(EMAIL, value).apply()
