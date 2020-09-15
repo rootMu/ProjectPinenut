@@ -10,14 +10,15 @@
         android:title="@string/action_settings"
         app:showAsAction="ifRoom" />
 
-    <group android:id="@+id/logout">
+    <group android:id="@+id/profile">
         <item
             android:id="@+id/action_profile"
             android:icon="@drawable/ic_profile"
             android:orderInCategory="1"
             android:title="@string/action_profile"
             app:showAsAction="ifRoom" />
-
+    </group>
+    <group android:id="@+id/logout">
         <item
             android:id="@+id/action_logout"
             android:orderInCategory="1"

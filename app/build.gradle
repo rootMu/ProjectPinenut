@@ -85,9 +85,9 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     //Firebase
-    implementation "com.firebaseui:firebase-ui-auth:$firebase_auth_version"
+    implementation "com.firebaseui:firebase-ui-auth:$firebase_ui_version"
     implementation "com.google.firebase:firebase-analytics:$firebase_analytics_version"
-    implementation "com.google.firebase:firebase-auth:$firebase_facebook_version"
+    implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
 
     //Facebook
     implementation "com.facebook.android:facebook-android-sdk:$facebook_version"
@@ -99,5 +99,26 @@ dependencies {
     implementation 'com.romandanylyk:pageindicatorview:1.0.2@aar'
     implementation 'com.airbnb.android:lottie:3.3.1'
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
+
+    //gif
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
+
+    //retrofit + gson
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+
+    //okhttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    //picasso
+    implementation "com.squareup.picasso:picasso:$picasso_version"
 
 }

@@ -24,10 +24,15 @@ class OnBoardingActivity : FragmentActivity() {
         setContentView(binding.root)
     }
 
+    override fun finish() {
+        viewModel.finishOnBoarding()
+        super.finish()
+    }
+
     override fun onStart() {
         super.onStart()
 
-        viewPager.onPageSelected{
+        viewPager.onPageSelected {
             viewModel.pagerPosition.postValue(it)
         }
     }

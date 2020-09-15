@@ -19,27 +19,35 @@ enum class AppStart {
  */
 
 @Singleton
-class CheckAppStart @Inject constructor(@PackageName var packageInfo: PackageInfo, var sharedPreferencesManager: SharedPreferencesManager) {
+class CheckAppStart @Inject constructor(
+    @PackageName var packageInfo: PackageInfo,
+    private var sharedPreferencesManager: SharedPreferencesManager
+) {
 
     private var appStart: AppStart = AppStart.NORMAL
+
+    val isFirstTime: Boolean
+        get() {
+            return status == AppStart.FIRST_TIME
+        }
+
 
     private val longVersionCode: Int by lazy {
         getLongVersionCode(packageInfo).toInt()
     }
 
-    val status: AppStart =
-        try {
-            appStart = checkAppStart(longVersionCode, sharedPreferencesManager.lastAppVersion)
-            // Update version in preferences
-            sharedPreferencesManager.lastAppVersion = longVersionCode
-            appStart
-        } catch (e: PackageManager.NameNotFoundException) {
-            Timber.w("Unable to determine current app version from package manager. Defensively assuming normal app start.")
-            appStart
-        }
+    val status: AppStart
+        get() =
+            try {
+                checkAppStart(longVersionCode, sharedPreferencesManager.lastAppVersion)
+            } catch (e: PackageManager.NameNotFoundException) {
+                Timber.w("Unable to determine current app version from package manager. Defensively assuming normal app start.")
+                appStart
+            }
 
-
-
+    fun updateLastAppVersion() {
+        sharedPreferencesManager.lastAppVersion = longVersionCode
+    }
 
     private fun checkAppStart(currentVersionCode: Int, lastVersionCode: Int): AppStart {
         return when {

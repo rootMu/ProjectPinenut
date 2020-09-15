@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+
     <!--blue-->
     <color name="blue_100">#BBDEFB</color>
 
@@ -19,6 +20,7 @@
     <color name="grey_100">#F5F5F5</color>
     <color name="grey_300">#E0E0E0</color>
     <color name="grey_600">#757575</color>
+    <color name="grey_2000">#262626</color>
     <color name="white_1000">#ffffff</color>
     <color name="black_1000">#000000</color>
 

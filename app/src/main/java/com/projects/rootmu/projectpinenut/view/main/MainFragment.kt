@@ -22,6 +22,7 @@ class MainFragment : Fragment() {
 
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
+
     @Inject
     lateinit var checkAppStart: CheckAppStart
 
@@ -35,10 +36,6 @@ class MainFragment : Fragment() {
     ): View? {
         binding = MainFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-
-        onBackPressed {
-            viewModel.logout()
-        }
 
         return binding.root
     }
@@ -66,7 +63,7 @@ class MainFragment : Fragment() {
 
         setupObservers()
 
-        if(sharedPreferencesManager.launchTutorial)
+        if (sharedPreferencesManager.launchTutorial)
             handleTutorial()
     }
 
@@ -80,12 +77,11 @@ class MainFragment : Fragment() {
                     this.user = null
                 }
                 else -> {
-                    if (this.user == null)
+                    if (this.user == null && !checkAppStart.isFirstTime)
                         navigateToLogin()
                 }
             }
         }
-
     }
 
     private fun navigateToLogin() {
@@ -94,8 +90,8 @@ class MainFragment : Fragment() {
         )
     }
 
-    private fun handleTutorial(){
+    private fun handleTutorial() {
 
-   }
+    }
 
 }

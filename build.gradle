@@ -19,13 +19,18 @@ buildscript {
         nav_version = '2.3.0'
 
         firebase_version = '4.3.3'
-        firebase_auth_version = '5.0.0'
+        firebase_ui_version = '5.0.0'
         firebase_analytics_version = '17.5.0'
-        firebase_facebook_version = '19.3.2'
+        firebase_auth_version = '19.4.0'
+
+        retrofit_version = '2.9.0'
+
+        okhttp_version = '3.14.9'
 
         facebook_version = '5.15.3'
 
         timber_version = '4.7.1'
+        picasso_version = '2.71828'
     }
 
     repositories {

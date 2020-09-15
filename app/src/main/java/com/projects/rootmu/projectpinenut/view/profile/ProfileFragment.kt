@@ -5,21 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.ProfileFragmentBinding
 import com.projects.rootmu.projectpinenut.utils.autoCleared
 import com.projects.rootmu.projectpinenut.utils.onAnimationEnd
 import com.projects.rootmu.projectpinenut.utils.onBackPressed
+import com.projects.rootmu.projectpinenut.view.MainActivity
 import com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProfileFragment : DialogFragment() {
+class ProfileFragment : Fragment() {
 
     private var binding: ProfileFragmentBinding by autoCleared()
     private val viewModel: AccountsViewModel by activityViewModels()
+
+    private var hasLoggedOut = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,25 +43,25 @@ class ProfileFragment : DialogFragment() {
 
         retainInstance = true
 
+        setupObservers()
+
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
+    private fun setupObservers(){
+        viewModel.authenticationState.observe(viewLifecycleOwner) { authenticationState ->
+            if(authenticationState == AccountsViewModel.AuthenticationState.UNAUTHENTICATED){
+                hasLoggedOut = true
 
-        onBackPressed {
-            close()
+                findNavController().navigate(
+                    R.id.action_profileFragment_to_loginFragment
+                )
+            }
         }
     }
 
-    fun close(){
-        activity?.onAnimationEnd(R.anim.slide_out_down, view) {
-            activity?.supportFragmentManager?.beginTransaction().also { ft ->
-                activity?.supportFragmentManager?.findFragmentByTag("profile")?.let {
-                    ft?.remove(it)
-                }
-            }?.commit()
-        }
+    override fun onStop() {
+        super.onStop()
+        viewModel.setProfileVisibility(hasLoggedOut)
     }
-
 }

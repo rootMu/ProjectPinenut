@@ -6,7 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.*
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -15,7 +15,6 @@ import com.projects.rootmu.projectpinenut.databinding.ActivityMainBinding
 import com.projects.rootmu.projectpinenut.utils.AppStart
 import com.projects.rootmu.projectpinenut.utils.CheckAppStart
 import com.projects.rootmu.projectpinenut.view.onboarding.OnBoardingActivity
-import com.projects.rootmu.projectpinenut.view.profile.ProfileFragment
 import com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,7 +23,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        const val PROFILE = "profile"
+    }
+
     private val viewModel: AccountsViewModel by viewModels()
+    private lateinit var navController: NavController
 
     @Inject
     lateinit var checkAppStart: CheckAppStart
@@ -37,9 +41,14 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment: NavHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController: NavController = navHostFragment.navController
+        navController = navHostFragment.navController
 
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.mainFragment, R.id.profileFragment,
+                R.id.loginFragment
+            )
+        )
         toolbar.setupWithNavController(navController, appBarConfiguration)
 
         setSupportActionBar(toolbar)
@@ -65,6 +74,16 @@ class MainActivity : AppCompatActivity() {
                 R.id.logout,
                 authenticationState == AccountsViewModel.AuthenticationState.AUTHENTICATED
             )
+            menu.setGroupVisible(
+                R.id.profile,
+                authenticationState == AccountsViewModel.AuthenticationState.AUTHENTICATED
+            )
+        }
+        viewModel.profileVisible.observe(this) {
+            menu.setGroupVisible(
+                R.id.profile,
+                !it
+            )
         }
         return true
     }
@@ -75,28 +94,19 @@ class MainActivity : AppCompatActivity() {
             R.id.action_logout -> viewModel.logout()
             R.id.action_profile -> navigateToProfile()
         }
-        val id = item.itemId
-        if (id == R.id.action_logout) {
-            viewModel.logout()
-        }
         return super.onOptionsItemSelected(item)
     }
 
     private fun navigateToProfile() {
-        supportFragmentManager.beginTransaction().also { ft ->
-            supportFragmentManager.findFragmentByTag("profile")?.let {
-                ft.remove(it)
-            }
-        }
-            .setCustomAnimations(
-                R.anim.slide_in_up,
-                R.anim.slide_out_down,
-                R.anim.slide_out_down,
-                R.anim.slide_in_up
-            )
-            .addToBackStack(null)
-            .add(R.id.profile_frame, ProfileFragment(), "profile")
-            .commit()
+        navController.navigate(
+            R.id.action_mainFragment_to_profileFragment
+        )
+        viewModel.setProfileVisibility(true)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
 }

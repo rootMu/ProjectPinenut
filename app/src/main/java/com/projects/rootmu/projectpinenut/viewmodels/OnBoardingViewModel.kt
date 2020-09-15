@@ -6,8 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.viewpager.widget.ViewPager
+import com.projects.rootmu.projectpinenut.utils.CheckAppStart
 
-class OnBoardingViewModel @ViewModelInject constructor() :
+class OnBoardingViewModel @ViewModelInject constructor(private val checkAppStart: CheckAppStart) :
     ViewModel() {
 
     companion object {
@@ -19,19 +20,23 @@ class OnBoardingViewModel @ViewModelInject constructor() :
     val description: MutableLiveData<String> = MutableLiveData()
 
     val pagerPosition: MutableLiveData<Int> = MutableLiveData(0)
-    val nextVisibility = Transformations.map(pagerPosition){
-        if(it+1 > NUM_ITEMS - 1){
+    val nextVisibility = Transformations.map(pagerPosition) {
+        if (it + 1 > NUM_ITEMS - 1) {
             View.INVISIBLE
-        }else{
+        } else {
             View.VISIBLE
         }
     }
-    val backVisibility = Transformations.map(pagerPosition){
-        if(it+1 == 1){
+    val backVisibility = Transformations.map(pagerPosition) {
+        if (it + 1 == 1) {
             View.INVISIBLE
-        }else{
+        } else {
             View.VISIBLE
         }
+    }
+
+    fun finishOnBoarding() {
+        checkAppStart.updateLastAppVersion()
     }
 
 }

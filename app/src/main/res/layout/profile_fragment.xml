@@ -21,47 +21,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.95" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.03" />
-
-        <FrameLayout
+            android:id="@+id/profile_bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="@{() -> fragment.close()}" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/profile_bottom_sheet"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/rounded_rectangle_small"
-            android:backgroundTint="@color/color_profile_background"
-            android:clickable="true"
-            android:elevation="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/guideline_end"
-            app:layout_constraintStart_toEndOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/guideline_top">
+            android:background="@color/color_profile_background">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
@@ -70,7 +33,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.2" />
 
-            <ImageView
+            <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/color_profile_foreground"
@@ -78,30 +41,44 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/guideline" />
+                app:layout_constraintTop_toBottomOf="@id/guideline"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/profile_picture"
+                android:background="@drawable/circle_shadow"
+                app:layout_constraintBottom_toBottomOf="@id/guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/guideline"
+                android:elevation="5dp">
+
+                <ImageView
+                    android:layout_width="@dimen/profile_portrait_width"
+                    android:layout_height="@dimen/profile_portrait_height"
+                    android:src="@{viewModel.getRandomFace()}"
+                    tools:src="@drawable/male13" />
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/profile_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/guideline">
-
-                <ImageView
-                    android:id="@+id/profile_picture"
-                    android:layout_width="@dimen/com_facebook_profilepictureview_preset_size_large"
-                    android:layout_height="@dimen/com_facebook_profilepictureview_preset_size_large"
-                    android:src="@drawable/ic_profile" />
+                app:layout_constraintTop_toBottomOf="@id/profile_picture">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{user.displayName}"
+                    android:text="@{user.displayName.isEmpty() ? viewModel.generateRandomName() : user.displayName}"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -158,11 +135,11 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/activity_vertical_margin"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:text="plumbing | carpentry | gardening | diy | drywall"
                     android:textStyle="italic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/lblSkills" />
+                    app:layout_constraintTop_toBottomOf="@id/lblSkills"
+                    tools:text="plumbing | carpentry | gardening | diy | drywall" />
 
                 <LinearLayout
                     android:id="@+id/rating"
@@ -292,31 +269,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ImageView
-                android:id="@+id/btnEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_edit"
-                android:background="?selectableItemBackgroundBorderless"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/btnClose"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> fragment.close()}"
-                android:src="@drawable/ic_close"
-                android:background="?selectableItemBackgroundBorderless"
-                android:padding="@dimen/activity_horizontal_margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </layout>

@@ -9,4 +9,7 @@
     <dimen name="large_text_size">16sp</dimen>
     <dimen name="extra_large_text_size">28sp</dimen>
 
+    <dimen name="profile_portrait_width">128dp</dimen>
+    <dimen name="profile_portrait_height">128dp</dimen>
+
 </resources>
