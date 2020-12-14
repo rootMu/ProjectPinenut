@@ -38,4 +38,7 @@
     <string name="finish">finish</string>
     <string name="next">next</string>
     <string name="back">back</string>
+    <string name="error_title">Oh Deary Me!</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
 </resources>

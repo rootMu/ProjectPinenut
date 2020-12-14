@@ -15,7 +15,7 @@
         android:gravity="top|center"
         android:padding="30dp"
         android:orientation="vertical"
-        tools:context=".view.onboarding.OnBoardingFragment">
+        tools:context=".ui.onboarding.OnBoardingFragment">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/image_onboarding"

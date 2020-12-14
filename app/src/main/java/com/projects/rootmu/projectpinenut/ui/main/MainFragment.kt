@@ -1,4 +1,4 @@
-package com.projects.rootmu.projectpinenut.view.main
+package com.projects.rootmu.projectpinenut.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater

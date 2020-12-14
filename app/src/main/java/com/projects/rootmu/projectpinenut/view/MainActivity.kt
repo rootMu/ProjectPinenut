@@ -14,8 +14,8 @@ import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.ActivityMainBinding
 import com.projects.rootmu.projectpinenut.utils.AppStart
 import com.projects.rootmu.projectpinenut.utils.CheckAppStart
-import com.projects.rootmu.projectpinenut.view.onboarding.OnBoardingActivity
-import com.projects.rootmu.projectpinenut.view.profile.ProfileFragment
+import com.projects.rootmu.projectpinenut.ui.onboarding.OnBoardingActivity
+import com.projects.rootmu.projectpinenut.ui.profile.ProfileFragment
 import com.projects.rootmu.projectpinenut.viewmodels.AccountsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*

@@ -1,4 +1,4 @@
-package com.projects.rootmu.projectpinenut.view.onboarding
+package com.projects.rootmu.projectpinenut.ui.onboarding
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

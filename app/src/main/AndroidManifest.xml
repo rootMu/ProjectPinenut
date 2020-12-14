@@ -43,7 +43,7 @@
 
 
         <activity
-            android:name=".view.onboarding.OnBoardingActivity"/>
+            android:name="com.projects.rootmu.projectpinenut.ui.onboarding.OnBoardingActivity"/>
 
     </application>
 

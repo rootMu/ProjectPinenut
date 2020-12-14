@@ -1,4 +1,4 @@
-package com.projects.rootmu.projectpinenut.view.onboarding
+package com.projects.rootmu.projectpinenut.ui.onboarding
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.projects.rootmu.projectpinenut.view.base
+package com.projects.rootmu.projectpinenut.ui.base
 
 import androidx.appcompat.app.AppCompatActivity
 import com.projects.rootmu.projectpinenut.listeners.Navigator
