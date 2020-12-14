@@ -13,7 +13,7 @@ import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 /**
- * Network Specific Dependencies
+ * Application Specific Dependencies
  */
 @InstallIn(ApplicationComponent::class)
 @Module
