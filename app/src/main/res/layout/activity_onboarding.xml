@@ -7,13 +7,13 @@
     <data>
         <variable
             name="activity"
-            type="com.projects.rootmu.projectpinenut.view.onboarding.OnBoardingActivity"/>
+            type="com.projects.rootmu.projectpinenut.ui.screens.onboarding.OnBoardingActivity"/>
 
         <variable
             name="viewModel"
-            type="com.projects.rootmu.projectpinenut.viewmodels.OnBoardingViewModel"/>
+            type="com.projects.rootmu.projectpinenut.ui.viewmodel.OnBoardingViewModel"/>
 
-        <import type="com.projects.rootmu.projectpinenut.view.onboarding.OnBoardingViewPagerAdapter"/>
+        <import type="com.projects.rootmu.projectpinenut.ui.screens.onboarding.OnBoardingViewPagerAdapter"/>
 
         <import type="android.view.View"/>
     </data>

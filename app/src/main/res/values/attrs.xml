@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ShadowLayout">
+        <attr name="topShadowEnabled" format="boolean" />
+        <attr name="bottomShadowEnabled" format="boolean" />
+    </declare-styleable>
+</resources>

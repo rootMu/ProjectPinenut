@@ -10,7 +10,7 @@ import com.projects.rootmu.projectpinenut.R
 sealed class DialogData {
 
     data class Input(
-        val dialogInnerData: DialogInnerData,
+        val data: DialogInnerData,
         val type: PopupType,
         val icon: CustomIcon?,
         val textFieldTitle: CharSequence,
@@ -91,7 +91,7 @@ sealed class DialogData {
         }
     }
 
-    data class Basic(val dialogInnerData: DialogInnerData, val type: PopupType) : DialogData() {
+    data class Basic(val data: DialogInnerData, val type: PopupType) : DialogData() {
         companion object {
             fun fromIds(
                 resources: Resources,
