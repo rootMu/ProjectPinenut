@@ -1,22 +1,29 @@
-package com.projects.rootmu.projectpinenut.ui.screens.jobs
+package com.projects.rootmu.projectpinenut.ui.screens.messages
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.projects.rootmu.projectpinenut.R
-import com.projects.rootmu.projectpinenut.databinding.JobsFragmentBinding
+import com.projects.rootmu.projectpinenut.databinding.ConversationsFragmentBinding
+import com.projects.rootmu.projectpinenut.listeners.MessagesListener
+import com.projects.rootmu.projectpinenut.ui.components.listeners.navigateTo
 import com.projects.rootmu.projectpinenut.ui.models.DialogData
 import com.projects.rootmu.projectpinenut.ui.models.PopupType
+import com.projects.rootmu.projectpinenut.ui.models.messages.Conversation
 import com.projects.rootmu.projectpinenut.ui.screens.dialog.NotifyingBaseFragment
 import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
+import com.projects.rootmu.projectpinenut.ui.viewmodel.messages.MessageViewModel
+import com.projects.rootmu.projectpinenut.util.specific.newMessages
 import kotlinx.android.synthetic.main.jobs_fragment.*
 import java.io.Serializable
 import javax.annotation.meta.Exhaustive
 
-class JobsFragment : NotifyingBaseFragment<JobsFragment.DialogCategory>() {
+class ConversationsFragment : NotifyingBaseFragment<ConversationsFragment.DialogCategory>(),
+    MessagesListener {
 
     sealed class DialogCategory : Serializable {
         object OnNetworkErrorRetryAvailable : DialogCategory()
@@ -24,25 +31,23 @@ class JobsFragment : NotifyingBaseFragment<JobsFragment.DialogCategory>() {
         object OnNetworkError : DialogCategory()
     }
 
-    interface Listener {
-        fun openJob()
-    }
-
     companion object {
-        const val INDEX = 2
+        const val INDEX = 1
     }
 
-    private lateinit var adapter: JobsAdapter
+    private val messageViewModel: MessageViewModel by activityViewModels()
+
+    private lateinit var adapter: ConversationsAdapter
     private lateinit var layoutManager: LinearLayoutManager
 
-    private var binding: JobsFragmentBinding by autoCleared()
+    private var binding: ConversationsFragmentBinding by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = JobsFragmentBinding.inflate(inflater, container, false)
+        binding = ConversationsFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
@@ -51,38 +56,45 @@ class JobsFragment : NotifyingBaseFragment<JobsFragment.DialogCategory>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        items.adapter = JobsAdapter().apply {
-            this.submitList(
-                listOf(
-                    JobsAdapter.Job(
-                        "Moe The lawn",
-                        "Moe Mrs Fellin's lawn, ensure it is no longer than 2cm."
-                    ),
-                    JobsAdapter.Job(
-                        "Trim The Hedge",
-                        "Trim Mrs Fellin's Hedge, ensure it maintains its current shape (Elephant)"
-                    ),
-                    JobsAdapter.Job(
-                        "Clean the Pond",
-                        "Clean Mr Dover's Pond, remove fallen leaves, empty and rinse filter"
-                    )
-                )
-            )
-
+        items.adapter = ConversationsAdapter().apply {
+            this.listener = this@ConversationsFragment
             adapter = this
         }
 
-        bottomNavigationListener?.updateBottomNavigationCount(
-            INDEX,
-            if (adapter.itemCount > 0) "${adapter.itemCount}" else null
-        )
+        setupObservers()
+
+        messageViewModel.clearSelectedConversation()
 
         items.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false).also {
             layoutManager = it
         }
     }
 
-    // Notifying
+    private fun setupObservers() {
+
+        messageViewModel.selectedConversation.observe(viewLifecycleOwner) {
+            it?.let {
+                navigateTo(MessagesFragment().apply {
+                    this.bottomNavigationListener =
+                        this@ConversationsFragment.bottomNavigationListener
+                })
+            }
+        }
+
+        messageViewModel.conversations.observe(viewLifecycleOwner) {
+            it?.let { conversations ->
+                val count = conversations.flatMap { it.newMessages() }.count()
+                bottomNavigationListener?.updateBottomNavigationCount(
+                    INDEX,
+                    if (count > 0) "$count" else null
+                )
+                adapter.submitList(conversations)
+            }
+        }
+
+    }
+
+    /** Notifying **/
 
     override fun doPrimaryAction(category: DialogCategory) {
         @Exhaustive
@@ -113,15 +125,20 @@ class JobsFragment : NotifyingBaseFragment<JobsFragment.DialogCategory>() {
             resources,
             PopupType.ERROR,
             R.string.error_title,
-            R.string.job_retrieval_failed_error_retry,
+            R.string.message_retrieval_failed_error_retry,
             R.string.retry,
             null
         )
         is DialogCategory.OnNetworkError -> DialogData.Basic.error(
             resources,
-            descriptionId = R.string.job_retrieval_failed_error
+            descriptionId = R.string.message_retrieval_failed_error
         )
     }
 
+    /** Listener **/
+
+    override fun openConversation(conversation: Conversation) {
+        messageViewModel.selectConversation(conversation)
+    }
 
 }

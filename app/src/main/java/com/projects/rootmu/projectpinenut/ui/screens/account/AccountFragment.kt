@@ -1,11 +1,11 @@
-package com.projects.rootmu.projectpinenut.ui.screens.home
+package com.projects.rootmu.projectpinenut.ui.screens.account
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.projects.rootmu.projectpinenut.R
-import com.projects.rootmu.projectpinenut.databinding.HomeFragmentBinding
+import com.projects.rootmu.projectpinenut.databinding.AccountFragmentBinding
 import com.projects.rootmu.projectpinenut.ui.models.DialogData
 import com.projects.rootmu.projectpinenut.ui.models.PopupType
 import com.projects.rootmu.projectpinenut.ui.screens.dialog.NotifyingBaseFragment
@@ -14,24 +14,24 @@ import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
 import java.io.Serializable
 import javax.annotation.meta.Exhaustive
 
-class HomeFragment : NotifyingBaseFragment<HomeFragment.DialogCategory>() {
+class AccountFragment : NotifyingBaseFragment<AccountFragment.DialogCategory>() {
 
     sealed class DialogCategory : Serializable {
         object UpdateFailed : DialogCategory()
     }
 
     companion object {
-        const val INDEX = 0
+        const val INDEX = 4
     }
 
-    private var binding: HomeFragmentBinding by autoCleared()
+    private var binding: AccountFragmentBinding by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = HomeFragmentBinding.inflate(inflater, container, false)
+        binding = AccountFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root

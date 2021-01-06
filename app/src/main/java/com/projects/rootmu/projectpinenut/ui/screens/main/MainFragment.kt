@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import com.google.firebase.auth.FirebaseUser
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.MainFragmentBinding
 import com.projects.rootmu.projectpinenut.ui.components.base.BaseFragment
-import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationCountListener
 import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationListener
+import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationReselectedListener
 import com.projects.rootmu.projectpinenut.ui.components.tabbedFragmentControl.TabbedFragmentCachedAdapter
 import com.projects.rootmu.projectpinenut.ui.components.tabbedFragmentControl.TabbedFragmentContainer
 import com.projects.rootmu.projectpinenut.ui.models.DialogData
@@ -37,7 +36,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
-    TabbedFragmentContainer.Listener, BottomNavigationCountListener, BottomNavigationListener {
+    TabbedFragmentContainer.Listener, BottomNavigationListener {
 
     enum class DialogCategory {
         JOB_REQUEST,
@@ -52,7 +51,6 @@ class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
 
     private lateinit var internalAdapter: MainTabAdapter
     private lateinit var adapter: TabbedFragmentContainer.Adapter
-
 
     private var binding: MainFragmentBinding by autoCleared()
     private val viewModel: AccountsViewModel by activityViewModels()
@@ -114,7 +112,7 @@ class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
         tabs.listener = this
 
         tabs.setupWithMeowBottomNavigation(bottom_navigation)
-        bottom_navigation.setOnClickMenuListener(this::onNavigationItemSelected)
+        //bottom_navigation.setOnClickMenuListener(this::onNavigationItemSelected)
 
         if (isFirstCreation && savedInstanceState == null) {
             val id = mainTabsViewModel.getInitialSelectedTab().ordinal
@@ -229,32 +227,16 @@ class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
         mainTabsViewModel.setCurrentSelectedTab(newIndex)
     }
 
-    /** BottomNavigationCountListener **/
-
-    override fun updateBottomNavigationCount(id: Int, count: String) {
-        bottom_navigation.setCount(id, count)
-    }
-
     /** BottomNavigationListener **/
 
-    override fun onNavigationItemSelected(model: MeowBottomNavigation.Model) {
-        val isNavigating = if (tabs.currentTabIndex != model.id) {
-            tabs.currentTabIndex = model.id
-            val newTab = internalAdapter.getTab(model.id)
-            currentTab = newTab
-
-            mainTabsViewModel.setCurrentSelectedTab(model.id)
-            true
-        } else {
-            false
-        }
-
-        (adapter.getItem(model.id) as? OnTabIconClickedListener)?.onTabIconClicked(
-            isNavigating
-        )
+    override fun updateBottomNavigationCount(id: Int, count: String?) {
+        count?.let {
+            bottom_navigation.setCount(id, it)
+        } ?: bottom_navigation.clearCount(id)
     }
 
-    override fun onNavigationItemReSelected(model: MeowBottomNavigation.Model) {
-        //TODO handle re selection if wanted
+    override fun setBottomNavigationReselectedListener(listener: BottomNavigationReselectedListener) {
+        bottom_navigation.setOnReselectListener(listener::onNavigationItemReselected)
     }
+
 }

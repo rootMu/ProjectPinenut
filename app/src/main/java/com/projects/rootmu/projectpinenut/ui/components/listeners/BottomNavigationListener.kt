@@ -1,8 +1,6 @@
 package com.projects.rootmu.projectpinenut.ui.components.listeners
 
-import com.etebarian.meowbottomnavigation.MeowBottomNavigation
-
 interface BottomNavigationListener {
-    fun onNavigationItemSelected(model: MeowBottomNavigation.Model)
-    fun onNavigationItemReSelected(model: MeowBottomNavigation.Model)
+    fun updateBottomNavigationCount(id: Int, count: String? = null)
+    fun setBottomNavigationReselectedListener(listener: BottomNavigationReselectedListener)
 }

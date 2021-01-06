@@ -18,6 +18,16 @@ fun Fragment.navigateTo(
     animated: Boolean = true
 ) = owning<Navigator>()?.changeToScreen(fragment, backStackName, animated)
 
+fun Fragment.navigateToUnlessSame(
+    fragment: Fragment,
+    backStackName: String? = null,
+    animated: Boolean = true
+) {
+
+    owning<Navigator>()?.changeToScreen(fragment, backStackName, animated)
+}
+
+
 interface ResetableNavigator:
     Navigator {
 

@@ -4,11 +4,11 @@ import android.view.animation.AnimationUtils
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import com.projects.rootmu.projectpinenut.R
-import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationCountListener
+import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-abstract class BaseFragment: Fragment(), OnBackPressedListener  {
+abstract class BaseFragment : Fragment(), OnBackPressedListener {
 
     val baseActivity
         get() = activity as? BaseActivity
@@ -19,7 +19,7 @@ abstract class BaseFragment: Fragment(), OnBackPressedListener  {
     var hasCreatedView = false
         private set
 
-    var bottomNavigationCountListener: BottomNavigationCountListener? = null
+    var bottomNavigationListener: BottomNavigationListener? = null
 
     protected open val childFragmentContainerId = R.id.child_fragment_container
 
@@ -82,9 +82,12 @@ abstract class BaseFragment: Fragment(), OnBackPressedListener  {
             setCustomAnimations(0, 0, popEnterAnim, popExitAnim)
         }
         val previous = childFragmentManager.findFragmentById(containerId) as? BaseFragment
+
         replace(containerId, fragment, tag)
+
         previous?.willAnimateAway(exitAnim)
         if (addToBackStack) addToBackStack(backStackName)
+
     }
 
     private var popToRootWhenResumed = false

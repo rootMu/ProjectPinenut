@@ -7,15 +7,14 @@ import android.util.AttributeSet
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
-import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationCountListener
-import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationListener
+import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationSelectedListener
 import com.projects.rootmu.projectpinenut.ui.components.views.FragmentContainer
 
 class TabbedFragmentContainer @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-): FragmentContainer(context, attrs, defStyleAttr) {
+) : FragmentContainer(context, attrs, defStyleAttr) {
 
     companion object {
         const val SUPER_STATE_KEY = "super_state"
@@ -41,10 +40,10 @@ class TabbedFragmentContainer @JvmOverloads constructor(
         )
     }
 
-    class DefaultOnMeowBottomNavigationItemSelectedListener(
+    class DefaultOnMeowBottomNavigationItemSelectedSelectedListener(
         private val bottomNavigation: MeowBottomNavigation,
         private val tabbedFragmentContainer: TabbedFragmentContainer
-    ): BottomNavigationListener {
+    ) : BottomNavigationSelectedListener {
         override fun onNavigationItemSelected(model: MeowBottomNavigation.Model) {
             val newIndex = bottomNavigation.models.let {
                 var index: Int? = null
@@ -60,10 +59,6 @@ class TabbedFragmentContainer @JvmOverloads constructor(
             if (newIndex != null) {
                 tabbedFragmentContainer.currentTabIndex = newIndex
             }
-        }
-
-        override fun onNavigationItemReSelected(model: MeowBottomNavigation.Model) {
-            //TODO handle re selection if wanted
         }
     }
 
@@ -88,19 +83,18 @@ class TabbedFragmentContainer @JvmOverloads constructor(
     fun setupWithMeowBottomNavigation(bottomNavigationView: MeowBottomNavigation) {
 
         for (i in 0 until tabCount) {
-            val icon = adapter?.getTabIconResId(i)?:0
-            bottomNavigationView.add(MeowBottomNavigation.Model(i,icon))
+            val icon = adapter?.getTabIconResId(i) ?: 0
+            bottomNavigationView.add(MeowBottomNavigation.Model(i, icon))
         }
-        val defaultOnMeowBottomNavigationItemSelectedListener = DefaultOnMeowBottomNavigationItemSelectedListener(
-            bottomNavigationView,
-            this
-        )
+
+        val defaultOnMeowBottomNavigationItemSelectedListener =
+            DefaultOnMeowBottomNavigationItemSelectedSelectedListener(
+                bottomNavigationView,
+                this
+            )
+
         bottomNavigationView.setOnClickMenuListener(
             defaultOnMeowBottomNavigationItemSelectedListener::onNavigationItemSelected
-        )
-
-        bottomNavigationView.setOnReselectListener(
-            defaultOnMeowBottomNavigationItemSelectedListener::onNavigationItemReSelected
         )
 
         bottomNavigationView.setOnShowListener(

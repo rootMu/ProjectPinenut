@@ -45,8 +45,12 @@
     <string name="job_retrieval_failed_error_retry">We were unable to retrieve your jobs. Hit retry to try again</string>
     <string name="job_retrieval_failed_error">We were unable to retrieve your jobs.</string>
 
-    <!-- Message -->
+    <!-- Messages -->
     <string name="message">You have received a new message</string>
+    <string name="message_retrieval_failed_error_retry">We were unable to retrieve your messages. Hit retry to try again</string>
+    <string name="message_retrieval_failed_error">We were unable to retrieve your messages.</string>
+    <string name="unread_messages">%1$d</string>
+    <string name="message_with">Conversation with %1$s</string>
 
     <string name="update_failed">Update Failed</string>
 

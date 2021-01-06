@@ -138,7 +138,7 @@ abstract class ContainerFragment : BaseFragment(), Navigator, OnTabIconClickedLi
 
     /**  Functions for children to override **/
 
-    open fun onTopButtonClicked(isRootFragment: Boolean) {
+    open fun onTopButtonClicked(isRootFragment: Boolean = false) {
         childFragmentManager.popBackStack()
     }
 

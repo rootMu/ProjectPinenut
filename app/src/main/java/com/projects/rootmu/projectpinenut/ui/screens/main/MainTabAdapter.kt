@@ -3,17 +3,18 @@ package com.projects.rootmu.projectpinenut.ui.screens.main
 import android.content.res.Resources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationCountListener
+import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationListener
 import com.projects.rootmu.projectpinenut.ui.components.tabbedFragmentControl.TabbedFragmentContainer
 import com.projects.rootmu.projectpinenut.ui.models.MainTab
 import com.projects.rootmu.projectpinenut.ui.screens.account.AccountContainerFragment
 import com.projects.rootmu.projectpinenut.ui.screens.home.HomeContainerFragment
 import com.projects.rootmu.projectpinenut.ui.screens.jobs.JobsContainerFragment
+import com.projects.rootmu.projectpinenut.ui.screens.messages.ConversationsContainerFragment
 
 class MainTabAdapter(
     private val manager: FragmentManager,
     private val resources: Resources,
-    private val bottomNavigationCountListener: BottomNavigationCountListener
+    private val bottomNavigationCountListener: BottomNavigationListener
 ) : TabbedFragmentContainer.Adapter {
     private val tabs = MainTab.values()
 
@@ -39,10 +40,10 @@ class MainTabAdapter(
 
 }
 
-fun MainTab.getFragment(bottomNavigationCountListener: BottomNavigationCountListener): Fragment =
+fun MainTab.getFragment(bottomNavigationCountListener: BottomNavigationListener): Fragment =
     when (this) {
         MainTab.HOME -> HomeContainerFragment(bottomNavigationCountListener)
-        MainTab.MESSAGES -> AccountContainerFragment(bottomNavigationCountListener)
+        MainTab.MESSAGES -> ConversationsContainerFragment(bottomNavigationCountListener)
         MainTab.JOBS -> JobsContainerFragment(bottomNavigationCountListener)
         MainTab.NOTIFICATIONS -> AccountContainerFragment(bottomNavigationCountListener)
         MainTab.ACCOUNT -> AccountContainerFragment(bottomNavigationCountListener)
@@ -51,7 +52,7 @@ fun MainTab.getFragment(bottomNavigationCountListener: BottomNavigationCountList
 fun MainTab.getFragmentTag(): String =
     when (this) {
         MainTab.HOME -> HomeContainerFragment::class.simpleName ?: "home"
-        MainTab.MESSAGES -> AccountContainerFragment::class.simpleName ?: "messages"
+        MainTab.MESSAGES -> ConversationsContainerFragment::class.simpleName ?: "messages"
         MainTab.JOBS -> JobsContainerFragment::class.simpleName ?: "jobs"
         MainTab.NOTIFICATIONS -> AccountContainerFragment::class.simpleName ?: "notifications"
         MainTab.ACCOUNT -> AccountContainerFragment::class.simpleName ?: "account"
