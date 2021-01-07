@@ -1,6 +1,7 @@
 package com.projects.rootmu.projectpinenut.ui.screens.dialog
 
 import com.projects.rootmu.projectpinenut.ui.models.DialogData
+import com.projects.rootmu.projectpinenut.util.general.TargetedObserver
 
 interface Notifying<T> {
 

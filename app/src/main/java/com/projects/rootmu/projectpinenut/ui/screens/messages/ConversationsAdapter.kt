@@ -6,10 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.projects.rootmu.projectpinenut.databinding.ViewholderConversationBinding
-import com.projects.rootmu.projectpinenut.databinding.ViewholderMessageBinding
 import com.projects.rootmu.projectpinenut.listeners.MessagesListener
 import com.projects.rootmu.projectpinenut.ui.models.messages.Conversation
-import java.util.*
 
 class ConversationsAdapter :
     ListAdapter<Conversation, ConversationsAdapter.ViewHolder>(DiffCallback()) {
@@ -28,7 +26,11 @@ class ConversationsAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            ViewholderConversationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ViewholderConversationBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         return ViewHolder(binding)
     }
 

@@ -5,9 +5,15 @@ import com.projects.rootmu.projectpinenut.ui.util.owning
 
 interface Navigator {
 
-    fun changeToScreen(fragment: Fragment, backStackName: String?, animated: Boolean)
+    fun changeToScreen(
+        fragment: Fragment,
+        backStackName: String?,
+        animated: Boolean,
+        addToBackStack: Boolean
+    )
 
     fun back(pastName: String?)
+
 }
 
 fun Fragment.navigateBack(pastName: String? = null) = owning<Navigator>()?.back(pastName)
@@ -15,28 +21,7 @@ fun Fragment.navigateBack(pastName: String? = null) = owning<Navigator>()?.back(
 fun Fragment.navigateTo(
     fragment: Fragment,
     backStackName: String? = null,
-    animated: Boolean = true
-) = owning<Navigator>()?.changeToScreen(fragment, backStackName, animated)
+    animated: Boolean = true,
+    addToBackStack: Boolean = true
+) = owning<Navigator>()?.changeToScreen(fragment, backStackName, animated, addToBackStack)
 
-fun Fragment.navigateToUnlessSame(
-    fragment: Fragment,
-    backStackName: String? = null,
-    animated: Boolean = true
-) {
-
-    owning<Navigator>()?.changeToScreen(fragment, backStackName, animated)
-}
-
-
-interface ResetableNavigator:
-    Navigator {
-
-    fun changeRootScreen(fragment: Fragment)
-
-    fun closeNavigation()
-}
-
-fun Fragment.resetNavigationTo(fragment: Fragment) =
-    owning<ResetableNavigator>()?.changeRootScreen(fragment)
-
-fun Fragment.closeCurrentNavigation() = owning<ResetableNavigator>()?.closeNavigation()

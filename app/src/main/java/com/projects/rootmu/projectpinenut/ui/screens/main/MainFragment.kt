@@ -11,32 +11,29 @@ import com.google.firebase.auth.FirebaseUser
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.MainFragmentBinding
 import com.projects.rootmu.projectpinenut.ui.components.base.BaseFragment
+import com.projects.rootmu.projectpinenut.ui.components.base.ContainerFragment
 import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationListener
 import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationReselectedListener
-import com.projects.rootmu.projectpinenut.ui.components.tabbedFragmentControl.TabbedFragmentCachedAdapter
-import com.projects.rootmu.projectpinenut.ui.components.tabbedFragmentControl.TabbedFragmentContainer
 import com.projects.rootmu.projectpinenut.ui.models.DialogData
 import com.projects.rootmu.projectpinenut.ui.models.MainTab
 import com.projects.rootmu.projectpinenut.ui.models.PopupType
 import com.projects.rootmu.projectpinenut.ui.screens.dialog.NotifyingBaseFragment
 import com.projects.rootmu.projectpinenut.ui.util.SharedPreferencesManager
 import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
-import com.projects.rootmu.projectpinenut.ui.util.general.delegates.enumDelegate
-import com.projects.rootmu.projectpinenut.ui.util.general.delegates.getStringDelegate
-import com.projects.rootmu.projectpinenut.ui.util.general.delegates.getValue
-import com.projects.rootmu.projectpinenut.ui.util.general.delegates.setValue
 import com.projects.rootmu.projectpinenut.ui.util.general.onBackPressed
 import com.projects.rootmu.projectpinenut.ui.util.specific.CheckAppStart
+import com.projects.rootmu.projectpinenut.ui.util.specific.setupWithMeowBottomNavigation
 import com.projects.rootmu.projectpinenut.ui.viewmodel.AccountsViewModel
-import com.projects.rootmu.projectpinenut.ui.viewmodel.main.MainTabsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_onboarding.*
 import kotlinx.android.synthetic.main.main_fragment.*
+import kotlinx.android.synthetic.main.main_fragment.viewPager
 import javax.annotation.meta.Exhaustive
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
-    TabbedFragmentContainer.Listener, BottomNavigationListener {
+    BottomNavigationListener {
 
     enum class DialogCategory {
         JOB_REQUEST,
@@ -49,14 +46,10 @@ class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
     @Inject
     lateinit var checkAppStart: CheckAppStart
 
-    private lateinit var internalAdapter: MainTabAdapter
-    private lateinit var adapter: TabbedFragmentContainer.Adapter
+    private lateinit var adapter: BottomNavAdapter
 
     private var binding: MainFragmentBinding by autoCleared()
     private val viewModel: AccountsViewModel by activityViewModels()
-    private val mainTabsViewModel: MainTabsViewModel by activityViewModels()
-
-    private var currentTab by enumDelegate<MainTab>(getStringDelegate("currentTab"))
 
     private var user: FirebaseUser? = null
 
@@ -102,55 +95,45 @@ class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
 //        if(sharedPreferencesManager.launchTutorial)
 //            handleTutorial()
 
-        tabs.adapter =
-            TabbedFragmentCachedAdapter(MainTabAdapter(childFragmentManager, resources, this).also {
-                internalAdapter = it
-            }).also {
-                this.adapter = it
+
+        viewPager.apply {
+            adapter = BottomNavAdapter.newInstance(this@MainFragment).also {
+                this@MainFragment.adapter = it
             }
+            setupWithMeowBottomNavigation(bottom_navigation) {
+                (getCurrentFragment() as? ContainerFragment)?.popToParent()
+            }
+        }
 
-        tabs.listener = this
-
-        tabs.setupWithMeowBottomNavigation(bottom_navigation)
-        //bottom_navigation.setOnClickMenuListener(this::onNavigationItemSelected)
+        mainTabsViewModel.setBottomNavigationListener(this)
 
         if (isFirstCreation && savedInstanceState == null) {
             val id = mainTabsViewModel.getInitialSelectedTab().ordinal
-            bottom_navigation.show(id)
+            viewPager.setCurrentItem(id, false)
+            bottom_navigation.show(id, false)
             mainTabsViewModel.setCurrentSelectedTab(id)
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        currentTab?.let { changeToTabIfViewActive(it, popToRoot = false) }
-    }
-
-    private fun changeToTabIfViewActive(tab: MainTab, popToRoot: Boolean) {
-        val index = internalAdapter.getIndexOf(tab)
-        tabs?.currentTabIndex = index
-
-        if (popToRoot) {
-            (adapter.getItem(index) as? BaseFragment)?.popToRootWhenResumed()
-        }
+    private fun changeToTabIfViewActive(tab: MainTab) {
+        val index = adapter.getIndexOf(tab)
+        viewPager.setCurrentItem(index, true)
     }
 
     override fun ancestorAnimatingAway(duration: Long) {
         (getCurrentFragment() as? BaseFragment)?.ancestorAnimatingAway(duration)
     }
 
-    private fun getFragment(position: Int): Fragment? {
+    private fun getFragment(position: Int): Fragment {
         return adapter.getItem(position)
     }
 
-    private fun getCurrentFragment(): Fragment? {
-        return getFragment(tabs.currentTabIndex!!)
+    private fun getCurrentFragment(): Fragment {
+        return getFragment(viewPager.currentItem)
     }
 
     fun goTo(tab: MainTab) {
-        currentTab = tab
-        changeToTabIfViewActive(tab, popToRoot = true)
+        changeToTabIfViewActive(tab)
     }
 
     private fun setupObservers() {
@@ -214,17 +197,6 @@ class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
             PopupType.INFO,
             R.string.message
         )
-    }
-
-    /** TabbedFragmentContainer.Listener **/
-
-    override fun onTabChanged(
-        oldIndex: Int?,
-        newIndex: Int,
-        oldFragment: Fragment?,
-        newFragment: Fragment
-    ) {
-        mainTabsViewModel.setCurrentSelectedTab(newIndex)
     }
 
     /** BottomNavigationListener **/

@@ -5,12 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.projects.rootmu.projectpinenut.ui.models.messages.Conversation
 import com.projects.rootmu.projectpinenut.ui.models.messages.Message
-import com.projects.rootmu.projectpinenut.util.general.PausableMutableLiveData
+import com.projects.rootmu.projectpinenut.util.general.mapDistinct
+import com.projects.rootmu.projectpinenut.util.general.updateValueIfNecessary
+import timber.log.Timber
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 
 class MessageViewModel @ViewModelInject constructor() : ViewModel() {
 
-    val selectedConversation = PausableMutableLiveData<Conversation?>()
+    val selectedConversation = MutableLiveData<Conversation?>()
+
+    val selectedConversationMessages = selectedConversation.mapDistinct { it?.messages }
 
     val conversations = MutableLiveData<List<Conversation>?>()
 
@@ -21,11 +26,11 @@ class MessageViewModel @ViewModelInject constructor() : ViewModel() {
     }
 
     fun selectConversation(conversation: Conversation) {
-        selectedConversation.setValue(conversation)
+        selectedConversation.value = conversation
     }
 
     fun clearSelectedConversation() {
-        selectedConversation.setValue(null)
+        selectedConversation.value = null
     }
 
     fun isSelectedConversation(conversation: Conversation): Boolean {

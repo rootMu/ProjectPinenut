@@ -17,17 +17,17 @@ import com.projects.rootmu.projectpinenut.ui.models.messages.Conversation
 import com.projects.rootmu.projectpinenut.ui.screens.dialog.NotifyingBaseFragment
 import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
 import com.projects.rootmu.projectpinenut.ui.viewmodel.messages.MessageViewModel
+import com.projects.rootmu.projectpinenut.util.general.TargetedObserver
 import com.projects.rootmu.projectpinenut.util.specific.newMessages
-import kotlinx.android.synthetic.main.jobs_fragment.*
+import kotlinx.android.synthetic.main.conversations_fragment.*
 import java.io.Serializable
 import javax.annotation.meta.Exhaustive
 
-class ConversationsFragment : NotifyingBaseFragment<ConversationsFragment.DialogCategory>(),
+open class ConversationsFragment : NotifyingBaseFragment<ConversationsFragment.DialogCategory>(),
     MessagesListener {
 
     sealed class DialogCategory : Serializable {
         object OnNetworkErrorRetryAvailable : DialogCategory()
-
         object OnNetworkError : DialogCategory()
     }
 
@@ -35,10 +35,21 @@ class ConversationsFragment : NotifyingBaseFragment<ConversationsFragment.Dialog
         const val INDEX = 1
     }
 
-    private val messageViewModel: MessageViewModel by activityViewModels()
+    override val observers by lazy {
+        super.observers + localObservers
+    }
+
+    protected open val localObservers: List<TargetedObserver<out Any?>> by lazy {
+        listOf(TargetedObserver({ messageViewModel.selectedConversation }) {
+            it?.let {
+                navigateTo(MessagesFragment())
+            }
+        })
+    }
+
+    protected val messageViewModel: MessageViewModel by activityViewModels()
 
     private lateinit var adapter: ConversationsAdapter
-    private lateinit var layoutManager: LinearLayoutManager
 
     private var binding: ConversationsFragmentBinding by autoCleared()
 
@@ -56,42 +67,56 @@ class ConversationsFragment : NotifyingBaseFragment<ConversationsFragment.Dialog
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        items.adapter = ConversationsAdapter().apply {
-            this.listener = this@ConversationsFragment
-            adapter = this
-        }
-
+        view.handle()
         setupObservers()
+    }
 
-        messageViewModel.clearSelectedConversation()
+    protected open fun View.handle() {
 
-        items.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false).also {
-            layoutManager = it
+        items.apply {
+
+            adapter = ConversationsAdapter().apply {
+                this.listener = this@ConversationsFragment
+                this@ConversationsFragment.adapter = this
+            }
+
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+
+            registerAdapterObserver()
+
+            messageViewModel.clearSelectedConversation()
         }
     }
 
-    private fun setupObservers() {
-
-        messageViewModel.selectedConversation.observe(viewLifecycleOwner) {
-            it?.let {
-                navigateTo(MessagesFragment().apply {
-                    this.bottomNavigationListener =
-                        this@ConversationsFragment.bottomNavigationListener
-                })
-            }
-        }
-
-        messageViewModel.conversations.observe(viewLifecycleOwner) {
-            it?.let { conversations ->
+    protected open fun setupObservers() {
+        messageViewModel.conversations.observe(viewLifecycleOwner) { list ->
+            list?.let { conversations ->
                 val count = conversations.flatMap { it.newMessages() }.count()
-                bottomNavigationListener?.updateBottomNavigationCount(
+                mainTabsViewModel.updateBottomNavigationCount(
                     INDEX,
                     if (count > 0) "$count" else null
                 )
                 adapter.submitList(conversations)
             }
         }
+    }
 
+    protected open fun RecyclerView.registerAdapterObserver() {
+        adapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(
+                positionStart: Int,
+                itemCount: Int
+            ) {
+                scrollToPosition(0)
+            }
+
+            override fun onItemRangeRemoved(
+                positionStart: Int,
+                itemCount: Int
+            ) {
+                smoothScrollToPosition(itemCount)
+            }
+        })
     }
 
     /** Notifying **/
@@ -140,5 +165,4 @@ class ConversationsFragment : NotifyingBaseFragment<ConversationsFragment.Dialog
     override fun openConversation(conversation: Conversation) {
         messageViewModel.selectConversation(conversation)
     }
-
 }

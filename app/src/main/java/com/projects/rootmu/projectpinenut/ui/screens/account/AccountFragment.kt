@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.AccountFragmentBinding
+import com.projects.rootmu.projectpinenut.listeners.MainTabNavigationListener
+import com.projects.rootmu.projectpinenut.ui.MainActivity
 import com.projects.rootmu.projectpinenut.ui.models.DialogData
 import com.projects.rootmu.projectpinenut.ui.models.PopupType
 import com.projects.rootmu.projectpinenut.ui.screens.dialog.NotifyingBaseFragment
 import com.projects.rootmu.projectpinenut.ui.screens.dialog.showDialog
 import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
+import com.projects.rootmu.projectpinenut.ui.util.owning
+import kotlinx.android.synthetic.main.account_fragment.*
 import java.io.Serializable
 import javax.annotation.meta.Exhaustive
 
@@ -39,6 +43,10 @@ class AccountFragment : NotifyingBaseFragment<AccountFragment.DialogCategory>() 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        goHome.setOnClickListener {
+            (activity as? MainActivity)?.goToHome()
+        }
     }
 
     private fun showUpdateFailed(update: Unit) {

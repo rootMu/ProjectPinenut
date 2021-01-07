@@ -39,9 +39,9 @@ class MessagesAdapter :
         }
 
         override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
-            return oldItem.author == newItem.author
+            return (oldItem.author == newItem.author
                     && oldItem.date == newItem.date
-                    && oldItem.message == newItem.message
+                    && oldItem.message == newItem.message)
         }
 
     }

@@ -10,9 +10,9 @@ import androidx.fragment.app.FragmentTransaction
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.ui.components.FullScreenChild
 import com.projects.rootmu.projectpinenut.ui.components.listeners.Navigator
-import com.projects.rootmu.projectpinenut.ui.screens.main.OnTabIconClickedListener
+import com.projects.rootmu.projectpinenut.ui.screens.MaintainBackStack
 
-abstract class ContainerFragment : BaseFragment(), Navigator, OnTabIconClickedListener {
+abstract class ContainerFragment : BaseFragment(), Navigator {
 
     protected val fullScreenFragmentContainerId = R.id.full_screen_fragment_container
 
@@ -37,7 +37,17 @@ abstract class ContainerFragment : BaseFragment(), Navigator, OnTabIconClickedLi
     }
 
     open fun updateStateForFragment(fragment: Fragment, forceImmediate: Boolean = false) {
-        //Do Nothing
+        // DO STUFF
+    }
+
+    open fun popToParent() {
+        activeFragment?.let {
+            if (!(it is MaintainBackStack && isBackStackEmpty)) {
+                for (i in 0 until childFragmentManager.backStackEntryCount) {
+                    childFragmentManager.popBackStack()
+                }
+            }
+        }
     }
 
     abstract fun getInitialFragment(): Fragment
@@ -114,32 +124,24 @@ abstract class ContainerFragment : BaseFragment(), Navigator, OnTabIconClickedLi
         }
     }
 
-    /** OnTabIconClickedListener **/
-
-    override fun onTabIconClicked(isNavigatingToTab: Boolean) {
-        if (isAdded) {
-            if (!isNavigatingToTab && childFragmentManager.backStackEntryCount > 0) {
-                childFragmentManager.popBackStack()
-            } else {
-                (activeFragment as? OnTabIconClickedListener)?.onTabIconClicked(isNavigatingToTab)
-            }
-        }
-    }
-
     /** Navigator **/
 
-    override fun changeToScreen(fragment: Fragment, backStackName: String?, animated: Boolean) {
-        replaceChildFragment(fragment, backStackName = backStackName, animated = animated)
+    override fun changeToScreen(
+        fragment: Fragment,
+        backStackName: String?,
+        animated: Boolean,
+        addToBackStack: Boolean
+    ) {
+        replaceChildFragment(
+            fragment,
+            backStackName = backStackName,
+            animated = animated,
+            addToBackStack = addToBackStack
+        )
     }
 
     override fun back(pastName: String?) {
         goBack(pastName)
-    }
-
-    /**  Functions for children to override **/
-
-    open fun onTopButtonClicked(isRootFragment: Boolean = false) {
-        childFragmentManager.popBackStack()
     }
 
 }

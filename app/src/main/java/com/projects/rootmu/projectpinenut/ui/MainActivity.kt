@@ -2,11 +2,12 @@ package com.projects.rootmu.projectpinenut.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.fragment.app.FragmentManager
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.listeners.MainTabNavigationListener
+import com.projects.rootmu.projectpinenut.ui.models.MainTab
 import com.projects.rootmu.projectpinenut.ui.screens.dialog.DialogActivity
 import com.projects.rootmu.projectpinenut.ui.screens.main.MainFragment
-import com.projects.rootmu.projectpinenut.ui.models.MainTab
 import com.projects.rootmu.projectpinenut.ui.viewmodel.AccountsViewModel
 
 class MainActivity : DialogActivity(),
@@ -31,12 +32,25 @@ class MainActivity : DialogActivity(),
     }
 
     /** MainTabNavigationListener **/
+
+    override fun goToHome() {
+        mainFragment?.goTo(MainTab.HOME)
+    }
+
+    override fun goToMessages() {
+        mainFragment?.goTo(MainTab.MESSAGES)
+    }
+
     override fun goToJobs() {
         mainFragment?.goTo(MainTab.JOBS)
     }
 
-    override fun goToHome() {
-        mainFragment?.goTo(MainTab.HOME)
+    override fun goToNotifications() {
+        mainFragment?.goTo(MainTab.NOTIFICATIONS)
+    }
+
+    override fun goToAccount() {
+        mainFragment?.goTo(MainTab.ACCOUNT)
     }
 
 //    @Inject

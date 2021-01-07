@@ -14,14 +14,6 @@ abstract class BaseActivity : AppCompatActivity(), Navigator {
     protected open val mainFragmentContainerId: Int
         get() = R.id.main_fragment
 
-    override fun back(pastName: String?) {
-        if (pastName != null) {
-            supportFragmentManager.popBackStack(pastName, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        } else {
-            supportFragmentManager.popBackStack()
-        }
-    }
-
     private fun changeToFragment(
         fragment: Fragment,
         backStackName: String? = null,
@@ -58,8 +50,21 @@ abstract class BaseActivity : AppCompatActivity(), Navigator {
 
     /** Navigator **/
 
-    override fun changeToScreen(fragment: Fragment, backStackName: String?, animated: Boolean) {
+    override fun changeToScreen(
+        fragment: Fragment,
+        backStackName: String?,
+        animated: Boolean,
+        addToBackStack: Boolean
+    ) {
         changeToFragment(fragment, backStackName = backStackName)
+    }
+
+    override fun back(pastName: String?) {
+        if (pastName != null) {
+            supportFragmentManager.popBackStack(pastName, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        } else {
+            supportFragmentManager.popBackStack()
+        }
     }
 
 }

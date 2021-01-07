@@ -3,6 +3,10 @@ package com.projects.rootmu.projectpinenut.ui.models
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.projects.rootmu.projectpinenut.R
+import com.projects.rootmu.projectpinenut.ui.screens.account.AccountContainerFragment
+import com.projects.rootmu.projectpinenut.ui.screens.home.HomeContainerFragment
+import com.projects.rootmu.projectpinenut.ui.screens.jobs.JobsContainerFragment
+import com.projects.rootmu.projectpinenut.ui.screens.messages.ConversationsContainerFragment
 
 enum class MainTab(@StringRes val titleRes: Int) {
     HOME(R.string.main_tab_home_title),
@@ -31,5 +35,13 @@ enum class MainTab(@StringRes val titleRes: Int) {
         ACCOUNT -> R.drawable.ic_account
     }
 
-
 }
+
+fun MainTab.getFragmentTag(): String =
+    when (this) {
+        MainTab.HOME -> HomeContainerFragment::class.simpleName ?: "home"
+        MainTab.MESSAGES -> ConversationsContainerFragment::class.simpleName ?: "messages"
+        MainTab.JOBS -> JobsContainerFragment::class.simpleName ?: "jobs"
+        MainTab.NOTIFICATIONS -> AccountContainerFragment::class.simpleName ?: "notifications"
+        MainTab.ACCOUNT -> AccountContainerFragment::class.simpleName ?: "account"
+    }

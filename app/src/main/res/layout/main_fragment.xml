@@ -9,11 +9,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.projects.rootmu.projectpinenut.ui.components.tabbedFragmentControl.TabbedFragmentContainer
-            android:id="@+id/tabs"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="12dp"/>
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:layout_marginBottom="12dp" />
 
         <com.etebarian.meowbottomnavigation.MeowBottomNavigation
             android:id="@+id/bottom_navigation"
