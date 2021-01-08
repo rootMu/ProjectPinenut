@@ -1,10 +1,8 @@
 package com.projects.rootmu.projectpinenut.di
 
 import android.content.Context
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import androidx.core.content.pm.PackageInfoCompat.getLongVersionCode
-import com.projects.rootmu.projectpinenut.utils.SharedPreferencesManager
+import com.projects.rootmu.projectpinenut.ui.util.SharedPreferencesManager
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -13,7 +11,7 @@ import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 /**
- * Network Specific Dependencies
+ * Application Specific Dependencies
  */
 @InstallIn(ApplicationComponent::class)
 @Module

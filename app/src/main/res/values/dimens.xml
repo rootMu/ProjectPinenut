@@ -9,4 +9,15 @@
     <dimen name="large_text_size">16sp</dimen>
     <dimen name="extra_large_text_size">28sp</dimen>
 
+    <!-- Bottom Navigation -->
+    <integer name="bottom_navigation_height">100</integer>
+
+
+    <!-- Shadow Layout -->
+    <dimen name="shadow_height_top">@dimen/shadow_height_medium</dimen>
+    <dimen name="shadow_height_bottom">@dimen/shadow_height_medium</dimen>
+    <dimen name="shadow_height_small">4dp</dimen>
+    <dimen name="shadow_height_medium">8dp</dimen>
+    <dimen name="shadow_height_large">12dp</dimen>
+
 </resources>

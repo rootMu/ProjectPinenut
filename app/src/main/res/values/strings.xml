@@ -32,10 +32,44 @@
 
     <string name="start_text_advice">By continuing on this application you agree to our Terms of Use and Privacy Policy</string>
 
+
+    <!-- Main Tab -->
+    <string name="main_tab_home_title">Home</string>
+    <string name="main_tab_messages_title">Messages</string>
+    <string name="main_tab_jobs_title">Jobs</string>
+    <string name="main_tab_notifications_title">Notifications</string>
+    <string name="main_tab_account_title">Account</string>
+
+    <!-- Jobs -->
+    <string name="job_request">You have a new Job Request</string>
+    <string name="job_retrieval_failed_error_retry">We were unable to retrieve your jobs. Hit retry to try again</string>
+    <string name="job_retrieval_failed_error">We were unable to retrieve your jobs.</string>
+
+    <!-- Messages -->
+    <string name="message">You have received a new message</string>
+    <string name="message_retrieval_failed_error_retry">We were unable to retrieve your messages. Hit retry to try again</string>
+    <string name="message_retrieval_failed_error">We were unable to retrieve your messages.</string>
+    <string name="unread_messages">%1$d</string>
+    <string name="message_with">Conversation with %1$s</string>
+
+    <string name="update_failed">Update Failed</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_message">Messages</string>
+    <string name="nav_job">Jobs</string>
+    <string name="nav_notification">Notification</string>
+    <string name="nav_account">Account</string>
+
     <!-- Generic Strings -->
     <string name="start">start</string>
     <string name="skip">Skip</string>
     <string name="finish">finish</string>
     <string name="next">next</string>
     <string name="back">back</string>
+    <string name="close">close</string>
+    <string name="error_title">Oh Deary Me!</string>
+    <string name="ok">Okay</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -32,7 +32,7 @@
         </activity>
 
         <activity
-            android:name=".view.MainActivity"
+            android:name=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,7 @@
 
 
         <activity
-            android:name=".view.onboarding.OnBoardingActivity"/>
+            android:name="com.projects.rootmu.projectpinenut.ui.screens.onboarding.OnBoardingActivity"/>
 
     </application>
 
