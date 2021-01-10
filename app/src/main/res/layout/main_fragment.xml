@@ -4,24 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.screens.main.MainFragment">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <com.hugocastelani.waterfalltoolbar.WaterfallToolbar
+            android:id="@+id/waterfall_toolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:final_elevation="25dp"
+            app:initial_elevation="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:scroll_final_elevation="100">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:theme="@style/AppTheme" />
+
+        </com.hugocastelani.waterfalltoolbar.WaterfallToolbar>
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="12dp"
             android:clipToPadding="false"
             android:overScrollMode="never"
-            android:layout_marginBottom="12dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/waterfall_toolbar" />
 
         <com.etebarian.meowbottomnavigation.MeowBottomNavigation
             android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:mbn_backgroundBottomColor="@color/colorPrimary"
             app:mbn_circleColor="@color/colorPrimaryDark"
             app:mbn_countBackgroundColor="#ff6f00"
@@ -31,5 +57,5 @@
             app:mbn_selectedIconColor="#ffffff"
             app:mbn_shadowColor="#1f212121" />
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

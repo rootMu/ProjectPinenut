@@ -9,10 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import com.projects.rootmu.projectpinenut.R
+import com.projects.rootmu.projectpinenut.ui.components.BackNavigation
 import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationReselectedListener
 import com.projects.rootmu.projectpinenut.ui.util.general.getMainHandler
 import com.projects.rootmu.projectpinenut.ui.util.general.onBackPressed
+import com.projects.rootmu.projectpinenut.ui.viewmodel.main.BottomNavigationViewModel
 import com.projects.rootmu.projectpinenut.ui.viewmodel.main.MainTabsViewModel
+import com.projects.rootmu.projectpinenut.ui.viewmodel.main.ToolBarViewModel
 import com.projects.rootmu.projectpinenut.util.general.TargetedObserver
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,6 +45,8 @@ abstract class BaseFragment : Fragment(), OnBackPressedListener,
     protected open val childFragmentContainerId = R.id.child_fragment_container
 
     protected val mainTabsViewModel: MainTabsViewModel by activityViewModels()
+    protected val bottomNavigationViewModel: BottomNavigationViewModel by activityViewModels()
+    protected val toolBarViewModel: ToolBarViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,8 +56,12 @@ abstract class BaseFragment : Fragment(), OnBackPressedListener,
         }
 
         setOnBackPressed(onBackPressed)
-        mainTabsViewModel.updateBottomNavigationReselectListener(this)
 
+        bottomNavigationViewModel.updateBottomNavigationReselectListener(this)
+
+        toolBarViewModel.apply {
+            showBackNavigation(this@BaseFragment is BackNavigation)
+        }
     }
 
     override fun onPause() {

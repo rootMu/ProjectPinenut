@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseUser
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.MainFragmentBinding
@@ -14,8 +15,10 @@ import com.projects.rootmu.projectpinenut.ui.components.base.BaseFragment
 import com.projects.rootmu.projectpinenut.ui.components.base.ContainerFragment
 import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationListener
 import com.projects.rootmu.projectpinenut.ui.components.listeners.BottomNavigationReselectedListener
+import com.projects.rootmu.projectpinenut.ui.components.listeners.WaterfallToolbarListener
 import com.projects.rootmu.projectpinenut.ui.models.DialogData
 import com.projects.rootmu.projectpinenut.ui.models.MainTab
+import com.projects.rootmu.projectpinenut.ui.models.NavType
 import com.projects.rootmu.projectpinenut.ui.models.PopupType
 import com.projects.rootmu.projectpinenut.ui.screens.dialog.NotifyingBaseFragment
 import com.projects.rootmu.projectpinenut.ui.util.SharedPreferencesManager
@@ -33,7 +36,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
-    BottomNavigationListener {
+    BottomNavigationListener, WaterfallToolbarListener {
 
     enum class DialogCategory {
         JOB_REQUEST,
@@ -50,6 +53,7 @@ class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
 
     private var binding: MainFragmentBinding by autoCleared()
     private val viewModel: AccountsViewModel by activityViewModels()
+    private val currentContainerFragment: ContainerFragment? get() = getCurrentFragment() as? ContainerFragment
 
     private var user: FirebaseUser? = null
 
@@ -101,18 +105,22 @@ class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
                 this@MainFragment.adapter = it
             }
             setupWithMeowBottomNavigation(bottom_navigation) {
-                (getCurrentFragment() as? ContainerFragment)?.popToParent()
+                currentContainerFragment?.popToParent()
             }
         }
 
-        mainTabsViewModel.setBottomNavigationListener(this)
-
-        if (isFirstCreation && savedInstanceState == null) {
-            val id = mainTabsViewModel.getInitialSelectedTab().ordinal
-            viewPager.setCurrentItem(id, false)
-            bottom_navigation.show(id, false)
-            mainTabsViewModel.setCurrentSelectedTab(id)
+        mainTabsViewModel.apply {
+            if (isFirstCreation && savedInstanceState == null) {
+                val id = getInitialSelectedTab().ordinal
+                viewPager.setCurrentItem(id, false)
+                bottom_navigation.show(id, false)
+                setCurrentSelectedTab(id)
+            }
         }
+
+        bottomNavigationViewModel.setBottomNavigationListener(this@MainFragment)
+        toolBarViewModel.setWaterfallToolbarListener(this@MainFragment)
+
     }
 
     private fun changeToTabIfViewActive(tab: MainTab) {
@@ -209,6 +217,27 @@ class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
 
     override fun setBottomNavigationReselectedListener(listener: BottomNavigationReselectedListener) {
         bottom_navigation.setOnReselectListener(listener::onNavigationItemReselected)
+    }
+
+    /** WaterfallToolbarListener **/
+
+    override fun setRecyclerView(recyclerView: RecyclerView) {
+        waterfall_toolbar.recyclerView = recyclerView
+    }
+
+    override fun setNavigationIcon(navType: NavType?) {
+        when (navType) {
+            NavType.HOME -> toolbar.setNavigationIcon(R.drawable.ic_home)
+            NavType.BACK -> {
+                toolbar.setNavigationIcon(R.drawable.ic_back)
+                toolbar.setNavigationOnClickListener { currentContainerFragment?.back() }
+            }
+            else -> toolbar.navigationIcon = null
+        }
+    }
+
+    override fun setToolbarTitle(title: String?) {
+        toolbar.title = title?:""
     }
 
 }

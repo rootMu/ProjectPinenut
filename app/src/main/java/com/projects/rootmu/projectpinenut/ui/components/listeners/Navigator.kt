@@ -12,7 +12,7 @@ interface Navigator {
         addToBackStack: Boolean
     )
 
-    fun back(pastName: String?)
+    fun back(pastName: String? = null)
 
 }
 

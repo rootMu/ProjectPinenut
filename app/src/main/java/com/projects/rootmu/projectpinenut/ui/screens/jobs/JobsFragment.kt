@@ -72,7 +72,7 @@ class JobsFragment : NotifyingBaseFragment<JobsFragment.DialogCategory>() {
             adapter = this
         }
 
-        mainTabsViewModel.updateBottomNavigationCount(
+        bottomNavigationViewModel.updateBottomNavigationCount(
             INDEX,
             if (adapter.itemCount > 0) "${adapter.itemCount}" else null
         )

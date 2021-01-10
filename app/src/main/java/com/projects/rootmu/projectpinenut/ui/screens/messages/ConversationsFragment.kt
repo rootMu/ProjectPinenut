@@ -8,7 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.projects.rootmu.projectpinenut.R
-import com.projects.rootmu.projectpinenut.databinding.ConversationsFragmentBinding
+import com.projects.rootmu.projectpinenut.databinding.MessagesFragmentBinding
 import com.projects.rootmu.projectpinenut.listeners.MessagesListener
 import com.projects.rootmu.projectpinenut.ui.components.listeners.navigateTo
 import com.projects.rootmu.projectpinenut.ui.models.DialogData
@@ -19,7 +19,7 @@ import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
 import com.projects.rootmu.projectpinenut.ui.viewmodel.messages.MessageViewModel
 import com.projects.rootmu.projectpinenut.util.general.TargetedObserver
 import com.projects.rootmu.projectpinenut.util.specific.newMessages
-import kotlinx.android.synthetic.main.conversations_fragment.*
+import kotlinx.android.synthetic.main.messages_fragment.*
 import java.io.Serializable
 import javax.annotation.meta.Exhaustive
 
@@ -51,14 +51,14 @@ open class ConversationsFragment : NotifyingBaseFragment<ConversationsFragment.D
 
     private lateinit var adapter: ConversationsAdapter
 
-    private var binding: ConversationsFragmentBinding by autoCleared()
+    private var binding: MessagesFragmentBinding by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = ConversationsFragmentBinding.inflate(inflater, container, false)
+        binding = MessagesFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
@@ -92,7 +92,7 @@ open class ConversationsFragment : NotifyingBaseFragment<ConversationsFragment.D
         messageViewModel.conversations.observe(viewLifecycleOwner) { list ->
             list?.let { conversations ->
                 val count = conversations.flatMap { it.newMessages() }.count()
-                mainTabsViewModel.updateBottomNavigationCount(
+                bottomNavigationViewModel.updateBottomNavigationCount(
                     INDEX,
                     if (count > 0) "$count" else null
                 )
