@@ -3,6 +3,7 @@ package com.projects.rootmu.projectpinenut.ui.viewmodel.messages
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.projects.rootmu.projectpinenut.repositories.MessagingRepository
 import com.projects.rootmu.projectpinenut.ui.models.messages.Conversation
 import com.projects.rootmu.projectpinenut.ui.models.messages.Message
 import com.projects.rootmu.projectpinenut.util.general.mapDistinct
@@ -11,7 +12,7 @@ import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
-class MessageViewModel @ViewModelInject constructor() : ViewModel() {
+class MessageViewModel @ViewModelInject constructor(private val messagingRepository: MessagingRepository) : ViewModel() {
 
     val selectedConversation = MutableLiveData<Conversation?>()
 
