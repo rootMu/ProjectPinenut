@@ -6,13 +6,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.ui.components.listeners.Navigator
-import dagger.hilt.android.AndroidEntryPoint
+import com.projects.rootmu.projectpinenut.util.general.TargetedObserver
 
-@AndroidEntryPoint
 abstract class BaseActivity : AppCompatActivity(), Navigator {
 
     protected open val mainFragmentContainerId: Int
         get() = R.id.main_fragment
+
+    open val observers = listOf<TargetedObserver<*>>()
+
+    override fun onResume() {
+        super.onResume()
+
+        for (targetedObserver in observers) {
+            targetedObserver.reObserve(this)
+        }
+    }
 
     private fun changeToFragment(
         fragment: Fragment,
