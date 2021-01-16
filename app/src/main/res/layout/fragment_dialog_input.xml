@@ -8,7 +8,7 @@
 
         <variable
             name="data"
-            type="com.projects.rootmu.projectpinenut.ui.models.DialogData.Basic" />
+            type="com.projects.rootmu.projectpinenut.ui.models.DialogData.Input" />
 
         <import type="android.view.View" />
 
@@ -40,8 +40,8 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@null"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@{PopupUtilsKt.iconId(data.type)}"
+                app:layout_constraintTop_toTopOf="@id/title_text"
+                app:icon="@{PopupUtilsKt.iconId(data.type)}"
                 tools:src="@drawable/ic_notification_info" />
 
             <TextView
@@ -81,16 +81,37 @@
                 app:layout_constraintTop_toBottomOf="@id/description"
                 tools:text="403 Error" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lbl_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@{data.textFieldTitle.toString()}"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@id/icon"
+                app:layout_constraintStart_toStartOf="@id/title_text"
+                app:layout_constraintTop_toBottomOf="@id/debug_message"
+                app:hintAnimationEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    app:inputType="@{data.inputType}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:id="@+id/primary_cta"
                 style="@style/Red_Rounded_Button"
                 android:layout_width="0dp"
-                android:layout_marginStart="2dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:text="@{data.data.primaryCta}"
                 app:layout_constraintEnd_toEndOf="@id/icon"
                 app:layout_constraintStart_toStartOf="@id/description"
-                app:layout_constraintTop_toBottomOf="@id/debug_message"
+                app:layout_constraintTop_toBottomOf="@id/lbl_input"
                 tools:text="OK" />
 
             <TextView

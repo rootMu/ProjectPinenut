@@ -3,36 +3,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.screens.main.home.HomeFragment">
 
-        <ScrollView
-            android:id="@+id/scroll_view"
+    <data>
+
+        <variable
+            name="account"
+            type="com.projects.rootmu.projectpinenut.models.account.Account" />
+
+        <variable
+            name="viewModel"
+            type="com.projects.rootmu.projectpinenut.ui.viewmodel.account.AccountsViewModel" />
+
+    </data>
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/homeBackground"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
-            <LinearLayout
-                android:id="@+id/homeBackground"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/txtUser"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:text="@{account.user.userName}"
+                tools:text="JSmith" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Account"/>
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.format(@string/name, account.user.firstName, account.user.lastName)}"
+                tools:text="Jerry Smith" />
 
-                <Button
-                    android:id="@+id/goHome"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Go Home"/>
+            <TextView
+                android:id="@+id/txtPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{account.user.phoneNumber}"
+                tools:text="0776378094" />
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/txtEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{account.user.emailAddress}"
+                tools:text="jerry_smith79@yahoo.com" />
 
-        </ScrollView>
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="@{() -> viewModel.logout()}"
+                android:layout_marginTop="8dp"
+                android:text="@string/action_logout" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </layout>

@@ -7,13 +7,15 @@ import android.view.ViewGroup
 import com.projects.rootmu.projectpinenut.databinding.FragmentDialogBasicBinding
 import com.projects.rootmu.projectpinenut.ui.components.base.BaseDialogFragment
 import com.projects.rootmu.projectpinenut.ui.models.DialogData
+import com.projects.rootmu.projectpinenut.ui.models.DialogResult
 import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
 import com.projects.rootmu.projectpinenut.ui.util.general.delegates.getLongDelegate
 import com.projects.rootmu.projectpinenut.ui.util.general.delegates.getValue
 import com.projects.rootmu.projectpinenut.ui.util.general.delegates.orThrow
 import com.projects.rootmu.projectpinenut.ui.util.general.delegates.setValue
+import kotlinx.android.synthetic.main.fragment_dialog_basic.*
 
-class BasicDialogFragment: BaseDialogFragment() {
+class BasicDialogFragment : BaseDialogFragment() {
 
     companion object {
         fun instantiate(id: Long): BasicDialogFragment {
@@ -35,20 +37,30 @@ class BasicDialogFragment: BaseDialogFragment() {
     ): View = FragmentDialogBasicBinding.inflate(inflater, container, false).let {
         binding = it
         it.lifecycleOwner = viewLifecycleOwner
-        it.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+//        dialogInstanceViewModel.getTypedData<DialogData.Basic>()?.let {
+//            setDialogData(it)
+//        }
+//
+//        primary_cta.setOnClickListener {
+//            dismiss()
+//            dialogInstanceViewModel.setResult(DialogResult.Primary())
+//        }
+//
+//        secondary_cta.setOnClickListener {
+//            dismiss()
+//            dialogInstanceViewModel.setResult(DialogResult.Secondary)
+//        }
+
     }
 
     private fun setDialogData(dialogData: DialogData.Basic) {
         binding.data = dialogData
-
-
-//        if (dialogData.type in listOf(PopupType.WARNING, PopupType.ERROR)) {
-//            //dialogInstanceViewModel.shownError(dialogData.data.text.toString())
-//        }
     }
 
 }

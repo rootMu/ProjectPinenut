@@ -2,6 +2,9 @@ package com.projects.rootmu.projectpinenut.ui.models
 
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
+import android.text.InputType
+import android.text.method.PasswordTransformationMethod
+import android.text.method.TransformationMethod
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.res.ResourcesCompat
@@ -14,7 +17,7 @@ sealed class DialogData {
         val type: PopupType,
         val icon: CustomIcon?,
         val textFieldTitle: CharSequence,
-        val inputType: Int,
+        val inputType: TransformationMethod,
         val defaultValue: CharSequence?
     ) : DialogData() {
 
@@ -44,7 +47,7 @@ sealed class DialogData {
                 @StringRes secondaryCta: Int?,
                 customIcon: CustomIcon?,
                 @StringRes textFieldTitle: Int,
-                inputType: Int,
+                inputType: TransformationMethod,
                 @StringRes defaultValue: Int?
             ): Input {
                 return Input(
@@ -69,7 +72,7 @@ sealed class DialogData {
                 title: CharSequence,
                 text: CharSequence,
                 textFieldTitle: CharSequence,
-                inputType: Int,
+                inputType: TransformationMethod,
                 defaultValue: CharSequence?,
                 primaryCta: CharSequence,
                 secondaryCta: CharSequence?

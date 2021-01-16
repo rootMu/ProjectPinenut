@@ -7,6 +7,7 @@
     <string name="continue_as_guest">Continue as Guest</string>
     <string name="title_activity_login">Sign in</string>
     <string name="action_logout">Logout</string>
+    <string name="create_account">Create Account</string>
 
     <string name="action_profile">Profile</string>
     <string name="profile_hire_me">Hire Me</string>
@@ -54,6 +55,16 @@
     <string name="message_with">Conversation with %1$s</string>
 
     <string name="update_failed">Update Failed</string>
+
+    <!-- Login -->
+    <string name="invalid_password">Oh dear, it looks like your password is not quite right.</string>
+    <string name="no_user_found">Oh dear, no user can be found by that name</string>
+    <string name="password_outdated_title">Oh Dear!</string>
+    <string name="password_outdated_message">It looks like your password is out of date and must be changed</string>
+    <string name="new_password">New Password</string>
+
+    <!-- Account -->
+    <string name="name">%1$s %2$s</string>
 
     <!-- Navigation -->
     <string name="nav_home">Home</string>

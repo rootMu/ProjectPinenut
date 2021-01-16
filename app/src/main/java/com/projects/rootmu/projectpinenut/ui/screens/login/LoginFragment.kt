@@ -1,31 +1,56 @@
 package com.projects.rootmu.projectpinenut.ui.screens.login
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.LoginFragmentBinding
+import com.projects.rootmu.projectpinenut.repository.account.AccountRepository
+import com.projects.rootmu.projectpinenut.ui.components.listeners.navigateTo
+import com.projects.rootmu.projectpinenut.ui.models.DialogData
+import com.projects.rootmu.projectpinenut.ui.models.PopupType
+import com.projects.rootmu.projectpinenut.ui.screens.account.AccountFragment
+import com.projects.rootmu.projectpinenut.ui.screens.dialog.NotifyingBaseFragment
+import com.projects.rootmu.projectpinenut.ui.screens.dialog.showDialog
 import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
 import com.projects.rootmu.projectpinenut.ui.util.general.onBackPressed
-import com.projects.rootmu.projectpinenut.ui.viewmodel.AccountsViewModel
-import com.projects.rootmu.projectpinenut.ui.viewmodel.AccountsViewModel.Companion.SIGN_IN_REQUEST_CODE
-import com.projects.rootmu.projectpinenut.ui.viewmodel.AccountsViewModel.Companion.USER
+import com.projects.rootmu.projectpinenut.ui.viewmodel.account.AccountsViewModel
+import com.projects.rootmu.projectpinenut.util.general.TargetedObserver
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
+import java.io.Serializable
+import javax.annotation.meta.Exhaustive
 
 @AndroidEntryPoint
-class LoginFragment : Fragment() {
+class LoginFragment : NotifyingBaseFragment<LoginFragment.DialogCategory>() {
+
+    sealed class DialogCategory : Serializable {
+        object InvalidPassword : DialogCategory()
+        object NoUserFound : DialogCategory()
+        object PasswordUpdateRequired : DialogCategory()
+    }
+
+    override val observers: List<TargetedObserver<*>>
+        get() = super.observers + listOf(TargetedObserver({ viewModel.loginState }) {
+
+            when (it?.authenticationState) {
+                AccountRepository.AuthenticationState.AUTHENTICATED -> {
+                    if (it.userToken?.passwordUpdateRequired == true) {
+                        showDialog(DialogCategory.PasswordUpdateRequired)
+                    } else {
+                        navigateTo(AccountFragment())
+                    }
+                }
+                AccountRepository.AuthenticationState.INVALID_AUTHENTICATION -> {
+                    showDialog(DialogCategory.InvalidPassword)
+                }
+                AccountRepository.AuthenticationState.UNAUTHENTICATED -> {
+                    showDialog(DialogCategory.NoUserFound)
+                }
+            }
+        })
 
     private var binding: LoginFragmentBinding by autoCleared()
     private val viewModel: AccountsViewModel by activityViewModels()
@@ -38,6 +63,7 @@ class LoginFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.loginDetails.lifecycleOwner = viewLifecycleOwner
 
         onBackPressed { /**Do Nothing**/ }
 
@@ -47,51 +73,63 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupObservers()
     }
 
-    private fun setupObservers() {
-        viewModel.providers.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                startActivityForResult(
-                    AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(it)
-                        .build(),
-                    SIGN_IN_REQUEST_CODE
-                )
+
+    // Notifying
+
+    override fun doPrimaryAction(category: DialogCategory) {
+        @Exhaustive
+        when (category) {
+            DialogCategory.InvalidPassword -> {
+                //DO Nothing
+            }
+            DialogCategory.NoUserFound -> {
+                //DO Nothing
+            }
+            DialogCategory.PasswordUpdateRequired -> {
+                //DO Nothing
             }
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SIGN_IN_REQUEST_CODE) {
-            val response = IdpResponse.fromResultIntent(data)
-            if (resultCode == Activity.RESULT_OK) {
-                // User successfully signed in.
-                val user = FirebaseAuth.getInstance().currentUser
-                navigateToMain(user)
-                Timber.i("Successfully signed in user ${user?.displayName}!")
-            } else {
-                // Sign in failed. If response is null, the user canceled the
-                // sign-in flow using the back button. Otherwise, check
-                // the error code and handle the error.
-                response?.let{
-                    Timber.i("Sign in unsuccessful ${it.error?.errorCode}!")
-                }
+    override fun doSecondaryAction(category: DialogCategory) {
+        @Exhaustive
+        when (category) {
+            DialogCategory.InvalidPassword -> {
+                //DO Nothing
+            }
+            DialogCategory.NoUserFound -> {
+                //DO Nothing
+            }
+            DialogCategory.PasswordUpdateRequired -> {
+                //DO Nothing
             }
         }
     }
 
-
-    private fun navigateToMain(user: FirebaseUser? = null) {
-        val args = user?.let {
-            bundleOf(USER to user)
-        }
-        findNavController().navigate(
-            R.id.action_loginFragment_to_mainFragment,
-            args
+    override fun getDialogData(category: DialogCategory) = when (category) {
+        DialogCategory.InvalidPassword -> DialogData.Banner.fromIds(
+            resources,
+            PopupType.ERROR,
+            R.string.invalid_password
+        )
+        DialogCategory.NoUserFound -> DialogData.Banner.fromIds(
+            resources,
+            PopupType.ERROR,
+            R.string.no_user_found
+        )
+        DialogCategory.PasswordUpdateRequired -> DialogData.Input.fromIds(
+            resources,
+            PopupType.WARNING,
+            R.string.password_outdated_title,
+            R.string.password_outdated_message,
+            R.string.ok,
+            null,
+            null,
+            R.string.new_password,
+            PasswordTransformationMethod.getInstance(),
+            null
         )
     }
 }

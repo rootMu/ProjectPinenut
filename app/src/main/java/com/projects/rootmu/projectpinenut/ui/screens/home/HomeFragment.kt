@@ -9,7 +9,6 @@ import com.projects.rootmu.projectpinenut.databinding.HomeFragmentBinding
 import com.projects.rootmu.projectpinenut.ui.models.DialogData
 import com.projects.rootmu.projectpinenut.ui.models.PopupType
 import com.projects.rootmu.projectpinenut.ui.screens.dialog.NotifyingBaseFragment
-import com.projects.rootmu.projectpinenut.ui.screens.dialog.showDialog
 import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
 import java.io.Serializable
 import javax.annotation.meta.Exhaustive
@@ -35,16 +34,6 @@ class HomeFragment : NotifyingBaseFragment<HomeFragment.DialogCategory>() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    private fun showUpdateFailed(update: Unit) {
-        showDialog(
-            DialogCategory.UpdateFailed
-        )
     }
 
     // Notifying

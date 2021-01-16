@@ -1,5 +1,6 @@
 package com.projects.rootmu.projectpinenut.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentManager
@@ -8,8 +9,13 @@ import com.projects.rootmu.projectpinenut.listeners.MainTabNavigationListener
 import com.projects.rootmu.projectpinenut.ui.models.MainTab
 import com.projects.rootmu.projectpinenut.ui.screens.dialog.DialogActivity
 import com.projects.rootmu.projectpinenut.ui.screens.main.MainFragment
-import com.projects.rootmu.projectpinenut.ui.viewmodel.AccountsViewModel
+import com.projects.rootmu.projectpinenut.ui.screens.onboarding.OnBoardingActivity
+import com.projects.rootmu.projectpinenut.ui.util.specific.AppStart
+import com.projects.rootmu.projectpinenut.ui.util.specific.CheckAppStart
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : DialogActivity(),
     MainTabNavigationListener {
 
@@ -17,7 +23,8 @@ class MainActivity : DialogActivity(),
         const val MAIN_TAG = "main"
     }
 
-    private val viewModel: AccountsViewModel by viewModels()
+    @Inject
+    lateinit var checkAppStart: CheckAppStart
 
     private val mainFragment
         get() = supportFragmentManager.findFragmentByTag(MAIN_TAG) as? MainFragment
@@ -28,6 +35,19 @@ class MainActivity : DialogActivity(),
 
         if (savedInstanceState == null) {
             addFragment(MainFragment(), tag = MAIN_TAG)
+        }
+
+        when (checkAppStart.status) {
+            AppStart.UPDATE -> {
+                //TODO show whats new
+            }
+            AppStart.FIRST_TIME -> {
+                startActivity(Intent(applicationContext, OnBoardingActivity::class.java))
+            }
+            else -> {
+                //TODO normal stuff? though it is worth nothing this will not be called AFTER UPDATE or FIRST_TIME
+                //TODO think about maybe having a callback for either of those
+            }
         }
     }
 
@@ -53,36 +73,6 @@ class MainActivity : DialogActivity(),
         mainFragment?.goTo(MainTab.ACCOUNT)
     }
 
-//    @Inject
-//    lateinit var checkAppStart: CheckAppStart
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        val binding: ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        val navHostFragment: NavHostFragment =
-//            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-//        val navController: NavController = navHostFragment.navController
-//
-//        val appBarConfiguration = AppBarConfiguration(navController.graph)
-//        toolbar.setupWithNavController(navController, appBarConfiguration)
-//
-//        setSupportActionBar(toolbar)
-//
-//        when (checkAppStart.status) {
-//            AppStart.UPDATE -> {
-//                //TODO do some sort of whats new dialog box
-//            }
-//            AppStart.FIRST_TIME -> {
-//                startActivity(Intent(applicationContext, OnBoardingActivity::class.java))
-//            }
-//            else -> {
-//                //TODO normal stuff? though it would need to be considered that this will not be called AFTER the onboarding
-//            }
-//        }
-//    }
 //
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {
 //        // Inflate the menu; this adds items to the action bar if it is present.

@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.projects.rootmu.projectpinenut.ui.viewmodel.AccountsViewModel" />
+            type="com.projects.rootmu.projectpinenut.ui.viewmodel.account.AccountsViewModel" />
 
         <variable
             name="user"

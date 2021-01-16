@@ -12,7 +12,7 @@ import com.projects.rootmu.projectpinenut.databinding.ProfileFragmentBinding
 import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
 import com.projects.rootmu.projectpinenut.ui.util.general.onAnimationEnd
 import com.projects.rootmu.projectpinenut.ui.util.general.onBackPressed
-import com.projects.rootmu.projectpinenut.ui.viewmodel.AccountsViewModel
+import com.projects.rootmu.projectpinenut.ui.viewmodel.account.AccountsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -20,7 +20,7 @@ import com.projects.rootmu.projectpinenut.util.general.TargetedObserver
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-abstract class BaseFragment : Fragment(), OnBackPressedListener,
+open class BaseFragment : Fragment(), OnBackPressedListener,
     BottomNavigationReselectedListener {
 
     open val observers = listOf<TargetedObserver<*>>()
