@@ -17,4 +17,61 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="NoElevationOverlayTheme" parent="AppTheme">
+        <item name="elevationOverlayEnabled">false</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">#EEEEEE</item>
+    </style>
+
+    <style name="Title_Bar">
+        <item name="android:textAllCaps">true</item>
+        <item name="autoSizeStepGranularity">1px</item>
+    </style>
+
+    <style name="Title_Fulfilment_Header" parent="Title_Bar">
+        <item name="android:gravity">start</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/white_1000</item>
+    </style>
+
+    <style name="Rounded_Button">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="Red_Rounded_Button" parent="Rounded_Button">
+        <item name="android:background">@drawable/button_solid_red</item>
+        <item name="android:textColor">@color/white_1000</item>
+    </style>
+
+    <style name="Red_Outline_Rounded_Button" parent="Rounded_Button">
+        <item name="android:background">@drawable/button_outline_red</item>
+        <item name="android:textColor">@color/dark_red</item>
+    </style>
+
+    <!-- Text -->
+    <style name="Regular_Text">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Text_Error" parent="Regular_Text">
+        <item name="android:textColor">@color/error</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="Header_16">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+
 </resources>

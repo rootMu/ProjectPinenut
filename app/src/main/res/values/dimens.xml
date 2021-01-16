@@ -2,4 +2,22 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">20dp</dimen>
     <dimen name="activity_horizontal_margin">20dp</dimen>
+
+    <dimen name="extra_small_text_size">5sp</dimen>
+    <dimen name="small_text_size">8sp</dimen>
+    <dimen name="normal_text_size">12sp</dimen>
+    <dimen name="large_text_size">16sp</dimen>
+    <dimen name="extra_large_text_size">28sp</dimen>
+
+    <!-- Bottom Navigation -->
+    <integer name="bottom_navigation_height">100</integer>
+
+
+    <!-- Shadow Layout -->
+    <dimen name="shadow_height_top">@dimen/shadow_height_medium</dimen>
+    <dimen name="shadow_height_bottom">@dimen/shadow_height_medium</dimen>
+    <dimen name="shadow_height_small">4dp</dimen>
+    <dimen name="shadow_height_medium">8dp</dimen>
+    <dimen name="shadow_height_large">12dp</dimen>
+
 </resources>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="conversation"
+            type="com.projects.rootmu.projectpinenut.ui.models.messages.Conversation" />
+
+        <import type="com.projects.rootmu.projectpinenut.util.specific.ConversationUtilsKt" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/rounded_rectangle_small_all"
+        android:elevation="1dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/author_image"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:contentDescription="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_profile" />
+
+            <TextView
+                android:id="@+id/author"
+                style="@style/Header_16"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@{ConversationUtilsKt.otherParticipants(conversation)}"
+                app:layout_constraintEnd_toStartOf="@id/date"
+                app:layout_constraintStart_toEndOf="@id/author_image"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="This is the author of a message" />
+
+            <TextView
+                android:id="@+id/date"
+                style="@style/Regular_Text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:lines="1"
+                android:text="@{ConversationUtilsKt.lastMessage(conversation).date.toLocalTime().toString()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="10:52pm" />
+
+            <TextView
+                android:id="@+id/last_message"
+                style="@style/Regular_Text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@{ConversationUtilsKt.lastMessage(conversation).message}"
+                app:layout_constraintEnd_toStartOf="@id/count"
+                app:layout_constraintStart_toEndOf="@id/author_image"
+                app:layout_constraintTop_toBottomOf="@id/author"
+                tools:text="This is an example message here it will only show one line and will elipse at the end" />
+
+            <TextView
+                android:id="@+id/count"
+                style="@style/Regular_Text"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/small_circle"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center"
+                android:text="@{@string/unread_messages(ConversationUtilsKt.newMessages(conversation).size())}"
+                android:textColor="@color/white_1000"
+                android:visibility="@{ConversationUtilsKt.newMessages(conversation).size() > 0 ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/author"
+                tools:text="1" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

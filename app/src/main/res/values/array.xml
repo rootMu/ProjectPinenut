@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="onboarding_title">
+        <item>@string/title_onboarding_1</item>
+        <item>@string/title_onboarding_2</item>
+        <item>@string/title_onboarding_3</item>
+    </string-array>
+
+    <string-array name="onboarding_description">
+        <item>@string/description_onboarding_1</item>
+        <item>@string/description_onboarding_2</item>
+        <item>@string/description_onboarding_3</item>
+    </string-array>
+
+</resources>
