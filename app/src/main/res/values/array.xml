@@ -12,10 +12,4 @@
         <item>@string/description_onboarding_3</item>
     </string-array>
 
-<!--    <integer-array name="onboarding_image">-->
-<!--        <item>@lottie_delivery_boy_bumpy_ride</item>-->
-<!--        <item>Id</item>-->
-<!--        <item>Area</item>-->
-<!--        <item>Type</item>-->
-<!--    </integer-array>-->
 </resources>
