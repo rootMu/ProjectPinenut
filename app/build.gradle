@@ -103,4 +103,7 @@ dependencies {
     //MeowBottomNavigation
     implementation 'com.etebarian:meow-bottom-navigation:1.2.0'
 
+    //Waterfall Toolbar
+    implementation 'com.github.hugocastelani:waterfall-toolbar:0.5.0'
+
 }

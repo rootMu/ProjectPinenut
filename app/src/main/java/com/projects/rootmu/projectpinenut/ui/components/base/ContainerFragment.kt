@@ -37,7 +37,7 @@ abstract class ContainerFragment : BaseFragment(), Navigator {
     }
 
     open fun updateStateForFragment(fragment: Fragment, forceImmediate: Boolean = false) {
-        // DO STUFF
+        // Do Stuff?
     }
 
     open fun popToParent() {
