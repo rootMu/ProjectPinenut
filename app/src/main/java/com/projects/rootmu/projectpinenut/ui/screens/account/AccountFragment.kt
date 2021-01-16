@@ -4,31 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.projects.rootmu.projectpinenut.R
+import androidx.fragment.app.activityViewModels
 import com.projects.rootmu.projectpinenut.databinding.AccountFragmentBinding
-import com.projects.rootmu.projectpinenut.listeners.MainTabNavigationListener
-import com.projects.rootmu.projectpinenut.ui.MainActivity
-import com.projects.rootmu.projectpinenut.ui.models.DialogData
-import com.projects.rootmu.projectpinenut.ui.models.PopupType
-import com.projects.rootmu.projectpinenut.ui.screens.dialog.NotifyingBaseFragment
-import com.projects.rootmu.projectpinenut.ui.screens.dialog.showDialog
+import com.projects.rootmu.projectpinenut.ui.components.base.BaseFragment
+import com.projects.rootmu.projectpinenut.ui.components.listeners.navigateTo
+import com.projects.rootmu.projectpinenut.ui.screens.login.LoginFragment
 import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
-import com.projects.rootmu.projectpinenut.ui.util.owning
-import kotlinx.android.synthetic.main.account_fragment.*
-import java.io.Serializable
-import javax.annotation.meta.Exhaustive
+import com.projects.rootmu.projectpinenut.ui.viewmodel.account.AccountsViewModel
+import com.projects.rootmu.projectpinenut.util.general.TargetedObserver
 
-class AccountFragment : NotifyingBaseFragment<AccountFragment.DialogCategory>() {
+class AccountFragment : BaseFragment() {
 
-    sealed class DialogCategory : Serializable {
-        object UpdateFailed : DialogCategory()
-    }
-
-    companion object {
-        const val INDEX = 4
-    }
+    override val observers: List<TargetedObserver<*>>
+        get() = super.observers + listOf(TargetedObserver({ viewModel.isLoggedIn }) {
+            if (!it) {
+                navigateTo(LoginFragment())
+            }
+        }, TargetedObserver({ viewModel.user }) {
+                binding.account = it
+            }
+        )
 
     private var binding: AccountFragmentBinding by autoCleared()
+    private val viewModel: AccountsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,51 +35,9 @@ class AccountFragment : NotifyingBaseFragment<AccountFragment.DialogCategory>() 
     ): View {
         binding = AccountFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         return binding.root
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        goHome.setOnClickListener {
-            (activity as? MainActivity)?.goToHome()
-        }
-    }
-
-    private fun showUpdateFailed(update: Unit) {
-        showDialog(
-            DialogCategory.UpdateFailed
-        )
-    }
-
-    // Notifying
-
-    override fun doPrimaryAction(category: DialogCategory) {
-        @Exhaustive
-        when (category) {
-            DialogCategory.UpdateFailed -> {
-                //DO Nothing
-            }
-        }
-    }
-
-    override fun doSecondaryAction(category: DialogCategory) {
-        @Exhaustive
-        when (category) {
-            DialogCategory.UpdateFailed -> {
-                //DO Nothing
-            }
-        }
-    }
-
-    override fun getDialogData(category: DialogCategory) = when (category) {
-        DialogCategory.UpdateFailed -> DialogData.Banner.fromIds(
-            resources,
-            PopupType.WARNING,
-            R.string.update_failed
-        )
-    }
-
 
 }

@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseUser
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.MainFragmentBinding
 import com.projects.rootmu.projectpinenut.ui.components.base.BaseFragment
@@ -23,7 +21,7 @@ import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
 import com.projects.rootmu.projectpinenut.ui.util.general.onBackPressed
 import com.projects.rootmu.projectpinenut.ui.util.specific.CheckAppStart
 import com.projects.rootmu.projectpinenut.ui.util.specific.setupWithMeowBottomNavigation
-import com.projects.rootmu.projectpinenut.ui.viewmodel.AccountsViewModel
+import com.projects.rootmu.projectpinenut.ui.viewmodel.account.AccountsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_onboarding.*
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -50,8 +48,6 @@ class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
 
     private var binding: MainFragmentBinding by autoCleared()
     private val viewModel: AccountsViewModel by activityViewModels()
-
-    private var user: FirebaseUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -134,30 +130,6 @@ class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
 
     fun goTo(tab: MainTab) {
         changeToTabIfViewActive(tab)
-    }
-
-    private fun setupObservers() {
-
-        viewModel.authenticationState.observe(viewLifecycleOwner)
-        { authenticationState ->
-            when (authenticationState) {
-                AccountsViewModel.AuthenticationState.AUTHENTICATED -> {
-                    //reset temp user variable so logout can happen
-                    this.user = null
-                }
-                else -> {
-                    if (this.user == null)
-                        navigateToLogin()
-                }
-            }
-        }
-
-    }
-
-    private fun navigateToLogin() {
-        findNavController().navigate(
-            R.id.action_mainFragment_to_loginFragment
-        )
     }
 
     private fun handleTutorial() {

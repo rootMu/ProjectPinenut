@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 
+
 /**
  * Application Specific Dependencies
  */
@@ -47,8 +48,12 @@ object ApplicationModule {
      */
     @Provides
     @Reusable
-    @JvmStatic
     @PackageName
-    internal fun providesPackageInfo(@ApplicationContext context: Context, packageManager: PackageManager) =
+    @JvmStatic
+    internal fun providesPackageInfo(
+        @ApplicationContext context: Context,
+        packageManager: PackageManager
+    ) =
         packageManager.getPackageInfo(context.packageName, 0)
+
 }

@@ -8,7 +8,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.projects.rootmu.projectpinenut.R
 
-abstract class BaseDialogFragment: DialogFragment() {
+abstract class BaseDialogFragment : DialogFragment() {
 
     abstract val id: Long
 
