@@ -5,18 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.projects.rootmu.projectpinenut.R
 import com.projects.rootmu.projectpinenut.databinding.JobsFragmentBinding
 import com.projects.rootmu.projectpinenut.ui.models.DialogData
 import com.projects.rootmu.projectpinenut.ui.models.PopupType
 import com.projects.rootmu.projectpinenut.ui.screens.dialog.NotifyingBaseFragment
 import com.projects.rootmu.projectpinenut.ui.util.general.autoCleared
-import kotlinx.android.synthetic.main.jobs_fragment.*
 import java.io.Serializable
 import javax.annotation.meta.Exhaustive
 
-class JobsFragment : NotifyingBaseFragment<JobsFragment.DialogCategory>() {
+
+class JobsFragment : NotifyingBaseFragment<JobsFragment.DialogCategory>(), OnMapReadyCallback {
 
     sealed class DialogCategory : Serializable {
         object OnNetworkErrorRetryAvailable : DialogCategory()
@@ -30,10 +34,18 @@ class JobsFragment : NotifyingBaseFragment<JobsFragment.DialogCategory>() {
 
     companion object {
         const val INDEX = 2
+        private const val GOOGLEMAP_COMPASS = "GoogleMapCompass" // [4]
+        private const val GOOGLEMAP_TOOLBAR = "GoogleMapToolbar" // [3]
+        private const val GOOGLEMAP_ZOOMIN_BUTTON = "GoogleMapZoomInButton" // [2]child[0]
+        private const val GOOGLEMAP_ZOOMOUT_BUTTON = "GoogleMapZoomOutButton" // [2]child[1]
+        private const val GOOGLEMAP_MYLOCATION_BUTTON = "GoogleMapMyLocationButton" // [0]
+
+
     }
 
-    private lateinit var adapter: JobsAdapter
+    private var adapter: JobsAdapter? = null
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var map: GoogleMap
 
     private var binding: JobsFragmentBinding by autoCleared()
 
@@ -51,35 +63,16 @@ class JobsFragment : NotifyingBaseFragment<JobsFragment.DialogCategory>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        items.adapter = JobsAdapter().apply {
-            this.submitList(
-                listOf(
-                    JobsAdapter.Job(
-                        "Moe The lawn",
-                        "Moe Mrs Fellin's lawn, ensure it is no longer than 2cm."
-                    ),
-                    JobsAdapter.Job(
-                        "Trim The Hedge",
-                        "Trim Mrs Fellin's Hedge, ensure it maintains its current shape (Elephant)"
-                    ),
-                    JobsAdapter.Job(
-                        "Clean the Pond",
-                        "Clean Mr Dover's Pond, remove fallen leaves, empty and rinse filter"
-                    )
-                )
-            )
 
-            adapter = this
-        }
+        val mapFragment = childFragmentManager
+            .findFragmentById(R.id.mapFragment) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
-        mainTabsViewModel.updateBottomNavigationCount(
-            INDEX,
-            if (adapter.itemCount > 0) "${adapter.itemCount}" else null
-        )
+//        mainTabsViewModel.updateBottomNavigationCount(
+//            INDEX,
+//            if (adapter?.itemCount > 0) "${adapter.itemCount}" else null
+//        )
 
-        items.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false).also {
-            layoutManager = it
-        }
     }
 
     // Notifying
@@ -121,6 +114,17 @@ class JobsFragment : NotifyingBaseFragment<JobsFragment.DialogCategory>() {
             resources,
             descriptionId = R.string.job_retrieval_failed_error
         )
+    }
+
+    // OnMapReadyCallback
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+
+        // Add a marker in Sydney and move the camera
+        val dundee = LatLng(56.49526, -2.98452)
+        //map.addMarker(MarkerOptions().position(dundee).title("Dundee"))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(dundee, 12F))
     }
 
 

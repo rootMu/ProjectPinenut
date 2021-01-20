@@ -67,27 +67,7 @@ class MainFragment : NotifyingBaseFragment<MainFragment.DialogCategory>(),
         val isFirstCreation = !hasCreatedView
 
         super.onViewCreated(view, savedInstanceState)
-        //Pass the User in here as initially authentication hasn't taken place
 
-//        with(arguments?.get(USER) as FirebaseUser?) {
-//
-//            val currentUser = this ?: FirebaseAuth.getInstance().currentUser
-//
-//            currentUser?.let { user ->
-//                user.displayName?.let {
-//                    sharedPreferencesManager.displayName = it
-//                }
-//
-//                user.email?.let {
-//                    sharedPreferencesManager.email = it
-//                }
-//            }
-//
-//            this@MainFragment.user = this
-//        }
-//
-//        setupObservers()
-//
 //        if(sharedPreferencesManager.launchTutorial)
 //            handleTutorial()
 
